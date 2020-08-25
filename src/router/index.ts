@@ -1,27 +1,33 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+import Router from 'vue-router';
+import routerConfig from './default'
+import dynamicRouter from './dynamic'
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-const routes: RouteConfig[] = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
+let constantRoutes = routerConfig
+let dynamicRoutes = dynamicRouter
+
+
+const createRouter = () => new Router({
+  // mode: 'history',  // Disabled due to Github Pages doesn't support this, enable this if you need.
+  scrollBehavior: (to: any, from: any, savedPosition: any) => {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-];
+  base: process.env.BASE_URL,
+  routes: constantRoutes
+})
 
-const router = new VueRouter({
-  routes,
-});
+const router = createRouter()
 
-export default router;
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter();
+  (router as any).matcher = (newRouter as any).matcher // reset router
+}
+
+export default router

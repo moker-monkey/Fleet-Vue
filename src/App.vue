@@ -1,29 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <Global></Global>
   </div>
 </template>
-
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import {
+  Vue,
+  Prop,
+  Emit,
+  Inject,
+  Model,
+  Watch,
+  Component,
+} from "vue-property-decorator";
+import Global from "./layout/Global.vue";
 
 @Component({
+  name: "app",
   components: {
-    HelloWorld,
+    Global,
   },
 })
 export default class App extends Vue {}
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
+@import "./assets/common/config.scss";
+// #app {
+//   @extend font;
+// }
 </style>
