@@ -1,5 +1,4 @@
 import { RouterItem } from './index.d'
-import Home from './async-route/Home.vue';
 const routes: RouterItem[] = [
     // {
     //     path: '/',

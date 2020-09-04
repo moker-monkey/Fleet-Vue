@@ -4,9 +4,16 @@ const routes: RouterItem[] = [
     {
         path: '/',
         name: 'Home',
-        meta: { title: 'hello', hidden: false },
+        meta: { title: '首页' },
         component: Home,
-    },
+    }, {
+        path: '/login',
+        name: 'Login',
+        meta: {
+            title: '登录',
+        },
+        component: () => import('@/views/login/index.vue')
+    }
     // {
     //     path: '/about',
     //     name: 'About',

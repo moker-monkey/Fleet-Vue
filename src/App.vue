@@ -14,6 +14,7 @@ import {
   Component,
 } from "vue-property-decorator";
 import Global from "./layout/Global.vue";
+import "@/styles/index.scss"
 
 @Component({
   name: "app",

@@ -1,18 +1,19 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
-import { RouteConfig } from 'vue-router'
-import { asyncRoutes, constantRoutes } from '@/router'
-import store from '@/store'
 
-const hasPermission = (roles: string[], route: RouteConfig) => {
+import { dynamicRoutes, constantRoutes } from '@/router'
+import store from '@/store'
+import { RouterItem } from '@/router/index.d'
+
+const hasPermission = (roles: string[], route: RouterItem) => {
   if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
+    return roles.some(role => (route.meta.roles as string[]).includes(role))
   } else {
     return true
   }
 }
 
-export const filterAsyncRoutes = (routes: RouteConfig[], roles: string[]) => {
-  const res: RouteConfig[] = []
+export const filterAsyncRoutes = (routes: RouterItem[], roles: string[]) => {
+  const res: RouterItem[] = []
   routes.forEach(route => {
     const r = { ...route }
     if (hasPermission(roles, r)) {
@@ -26,17 +27,17 @@ export const filterAsyncRoutes = (routes: RouteConfig[], roles: string[]) => {
 }
 
 export interface IPermissionState {
-  routes: RouteConfig[]
-  dynamicRoutes: RouteConfig[]
+  routes: RouterItem[]
+  dynamicRoutes: RouterItem[]
 }
 
 @Module({ dynamic: true, store, name: 'permission' })
 class Permission extends VuexModule implements IPermissionState {
-  public routes: RouteConfig[] = []
-  public dynamicRoutes: RouteConfig[] = []
+  public routes: RouterItem[] = []
+  public dynamicRoutes: RouterItem[] = []
 
   @Mutation
-  private SET_ROUTES(routes: RouteConfig[]) {
+  private SET_ROUTES(routes: RouterItem[]) {
     this.routes = constantRoutes.concat(routes)
     this.dynamicRoutes = routes
   }
@@ -45,9 +46,9 @@ class Permission extends VuexModule implements IPermissionState {
   public GenerateRoutes(roles: string[]) {
     let accessedRoutes
     if (roles.includes('admin')) {
-      accessedRoutes = asyncRoutes
+      accessedRoutes = dynamicRoutes
     } else {
-      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+      accessedRoutes = filterAsyncRoutes(dynamicRoutes, roles)
     }
     this.SET_ROUTES(accessedRoutes)
   }

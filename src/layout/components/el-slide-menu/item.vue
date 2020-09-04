@@ -3,20 +3,20 @@
     <template v-if="hasOneShowingChild(item.children,item) &&!item.hidden">
       <el-menu-item :index="item.path">
         <i :class="item.icon_classname"></i>
-        <span slot="title">{{item.label}}</span>
+        <span slot="title">{{item.name}}</span>
       </el-menu-item>
     </template>
     <template v-else>
       <el-submenu :index="item.path">
         <template slot="title">
           <i :class="item.icon_classname"></i>
-          <span slot="title" style="margin-left:4px;">{{item.label}}</span>
+          <span slot="title" style="margin-left:4px;">{{item.name}}</span>
         </template>
         <template>
           <slide-menu-item v-for="child in item.children" :key="child.path" :item="child"></slide-menu-item>
         </template>
       </el-submenu>
-    </template>
+    </template>r
   </fragment>
 </template>
 <script lang="ts">

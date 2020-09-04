@@ -8,7 +8,7 @@ export interface RouterMeta {
     noCatch?: boolean // default is false,if true,the page will not be cached;
     affix?: boolean // default is true, if true,the tag will affix in the tags-view
     activeMenu?: string // /example/list  (if set path, the sidebar will highlight the path you set)
-
+    roles?: string[] // /
 }
 
 export interface RouterItem {
@@ -17,4 +17,5 @@ export interface RouterItem {
     redirect?: string | 'noredirect' //'a router-name'
     meta: RouterMeta
     component: any
+    children?: RouterItem[]
 }

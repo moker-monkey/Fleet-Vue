@@ -3,6 +3,10 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import './plugins/element'
+import i18n from '@/plugins/i18n'
+
+import '@/styles/element-variables.scss'
+import '@/styles/index.scss'
 
 Vue.config.productionTip = false;
 
@@ -10,5 +14,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
+  i18n,
   render: (h) => h(App),
 }).$mount('#app');
