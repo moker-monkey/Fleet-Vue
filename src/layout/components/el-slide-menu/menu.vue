@@ -4,11 +4,11 @@
     default-active="active"
     :default-openeds="open"
     class="menu-slide"
-    :collapse="fold"
-    background-color="#fff"
+    :collapse="isCollapse"
+    :background-color="backgoundColor"
     @select="selectMenu"
-    text-color="#474e59"
-    active-text-color="#229b72"
+    :text-color="textColor"
+    :active-text-color="activeTextColor"
     unique-opened
     ref="menu"
   >
@@ -16,9 +16,10 @@
   </el-menu>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import routesConfigs from "../../../router/default";
-import MenuItem from "./item.vue";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import routesConfigs from '../../../router/default';
+import MenuItem from './item.vue';
+import style from '@/assets/common/settings.scss';
 @Component({
   components: {
     MenuItem,
@@ -27,15 +28,29 @@ import MenuItem from "./item.vue";
 export default class Menu extends Vue {
   @Prop() public active: any;
   @Prop() public open: any;
+  @Prop() public isCollapse!: boolean;
   @Prop() public changeActive: any;
+  get textColor() {
+    return style.menuTextColor;
+  }
+  get activeTextColor() {
+    return style.menuActiveColor;
+  }
+  get backgoundColor() {
+    return style.menuBackgroundColor;
+  }
   public source = routesConfigs;
   public create(this: any) {}
   public mounted(this: any) {}
-  @Watch("active")
+  @Watch('active')
   public act(o: any, n: any) {}
   public hanler(this: any) {}
   public selectMenu(this: any, index: string, indexPath: string[]) {
-    this.$emit("select", { index, indexPath });
+    this.$emit('select', { index, indexPath });
   }
 }
 </script>
+<style lang="scss">
+@import "@/assets/common/settings.scss";
+
+</style>

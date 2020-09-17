@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
 
-import { dynamicRoutes, constantRoutes } from '@/router'
+import { dynamicRoutes, staticRouter } from '@/router'
 import store from '@/store'
 import { RouterItem } from '@/router/index.d'
 
@@ -35,13 +35,6 @@ export interface IPermissionState {
 class Permission extends VuexModule implements IPermissionState {
   public routes: RouterItem[] = []
   public dynamicRoutes: RouterItem[] = []
-
-  @Mutation
-  private SET_ROUTES(routes: RouterItem[]) {
-    this.routes = constantRoutes.concat(routes)
-    this.dynamicRoutes = routes
-  }
-
   @Action
   public GenerateRoutes(roles: string[]) {
     let accessedRoutes
@@ -52,6 +45,13 @@ class Permission extends VuexModule implements IPermissionState {
     }
     this.SET_ROUTES(accessedRoutes)
   }
+  @Mutation
+  private SET_ROUTES(routes: RouterItem[]) {
+    this.routes = staticRouter.concat(routes)
+    this.dynamicRoutes = routes
+  }
+
+
 }
 
 export const PermissionModule = getModule(Permission)

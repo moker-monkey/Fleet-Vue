@@ -12,21 +12,20 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import Global from "./layout/Global.vue";
-import "@/styles/index.scss"
+} from 'vue-property-decorator';
+import Global from './layout/Global.vue';
+import '@/styles/index.scss';
 
 @Component({
-  name: "app",
+  name: 'app',
   components: {
     Global,
   },
 })
 export default class App extends Vue {}
 </script>
-<style lang="scss" scoped>
-@import "./assets/common/config.scss";
-// #app {
-//   @extend font;
-// }
+<style lang="scss">
+@import "@/assets/common/reset.scss";
+@import "@/assets/common/settings.scss";
+
 </style>

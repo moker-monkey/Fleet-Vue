@@ -5,7 +5,7 @@ import dynamicRouter from './dynamic'
 
 Vue.use(Router);
 
-export let constantRoutes = routerConfig
+export let staticRouter = routerConfig
 export let dynamicRoutes = dynamicRouter
 
 
@@ -19,7 +19,7 @@ const createRouter = () => new Router({
     }
   },
   base: process.env.BASE_URL,
-  routes: constantRoutes
+  routes: staticRouter,
 })
 
 const router = createRouter()

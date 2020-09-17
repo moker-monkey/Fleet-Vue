@@ -1,0 +1,81 @@
+/* layout */
+/* header */
+// 顶部导航（大部分系统）：一级导航高度 64px，二级导航 48px。
+// 顶部导航（展示类页面）：一级导航高度 80px，二级导航 56px。
+// 顶部导航高度的范围计算公式为：48+8n。
+$header-height: 50px;
+$second-header-height:48px;
+$header-color: #fff;
+/* slide */
+// 侧边导航宽度的范围计算公式：200+8n。
+$slide-width:200px;
+$menu-text-color:#474e59;
+$menu-active-text-color:#229b72;
+$menu-background-color: #fff;
+$slide-background-color:#fff;
+/* content */
+$content-wrap-background-color:#eef1f6;
+$content-background-color:#fff;
+
+/*  design*/
+
+/* font-color */
+$major-font-color: #303133;
+$normal-font-color:#606266;
+$minor-font-color: #909399;
+$placeholder-font-color: #C0C4CC;
+
+$error-font-color:#F56C6C;
+$warn-font-color: #E6A23C;
+$success-font-color: #67C23A;
+
+/* font-size */
+$extra-small-font-size: 12px; // 辅助文字
+$normal-small-font-size: 13px; // 正文（小）
+$normal-base-font-size: 14px; // 正文
+$normal-medium-font-size: 16px; // 小标题
+$normal-large-font-size:18px; // 标题
+$extra-large-font-size: 20px; // 主标题
+
+$font-family:"Helvetica Neue",
+Helvetica,
+"PingFang SC",
+"Hiragino Sans GB",
+"Microsoft YaHei",
+"微软雅黑",
+Arial,
+sans-serif;
+;
+
+
+
+/* border */
+/* base color */
+$level1-border:#DCDFE6; // 1级
+$level2-border:#E4E7ED; // 2级
+$level3-border:#E4E7ED; // 3级
+$level4-border:#F2F6FC; // 4级
+/* style */
+$dashed :2px dashed #eee; // 虚线边框
+$solid :1px solid #eee; // 实线边框
+/* radius */
+$no-border-radius: 0px;
+$small-border-radius: 2px;
+$normal-border-radius:4px;
+$extra-large-border-radius:30px;
+/* shadow */
+$normal-shadow:0 2px 4px rgba(0, 0, 0, .12),
+0 0 6px rgba(0, 0, 0, .04);
+$shallow-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+
+
+
+
+:export {
+    menuTextColor: $menu-text-color;
+    menuBackgroundColor: $menu-background-color;
+    menuActiveColor: $menu-active-text-color;
+    sliderWidth: $slide-width;
+    headerHeight: $header-height;
+}

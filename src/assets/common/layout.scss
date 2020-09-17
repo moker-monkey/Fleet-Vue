@@ -1,0 +1,26 @@
+@import '@/assets/common/settings.scss';
+
+#layout-header {
+    height: $header-height;
+    flex-shrink: 0;
+    padding: 0;
+    background-color: $header-color;
+}
+
+#layout-global {
+    height: 100vh;
+}
+
+#layout-slider {
+    background-color: $slide-background-color;
+}
+
+#layout-content {
+    padding: 0;
+    margin: 10px;
+    background-color: $content-background-color;
+}
+
+#layout-content-wrap {
+    background-color: $content-wrap-background-color;
+}

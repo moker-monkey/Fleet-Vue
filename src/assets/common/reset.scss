@@ -1,3 +1,5 @@
+@import 'mixin.scss';
+
 html,
 body,
 div,
@@ -81,7 +83,6 @@ video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     font: inherit;
     font-weight: normal;
     vertical-align: baseline;
@@ -134,9 +135,9 @@ td {
 /* custom */
 a {
     outline: none;
-    color: $normal-font-color;
     text-decoration: none;
-    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    font: inherit;
 }
 
 a:focus {
@@ -146,5 +147,16 @@ a:focus {
 input:focus,
 select:focus,
 textarea:focus {
-    outline: -webkit-focus-ring-color auto 0;
+    outline: focus-ring-color auto 0;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    @include base-font;
+}
+
+.el-menu {
+    border: 0;
 }

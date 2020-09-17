@@ -28,6 +28,28 @@ class Layout extends VuexModule implements IAppState {
     public language = getLocale()
     public size = getSize() || 'medium'
 
+    @Action
+    public ToggleSideBar(withoutAnimation: boolean) {
+        this.TOGGLE_SIDEBAR(withoutAnimation)
+    }
+    @Action
+    public CloseSideBar(withoutAnimation: boolean) {
+        this.CLOSE_SIDEBAR(withoutAnimation)
+    }
+
+    @Action
+    public ToggleDevice(device: DeviceType) {
+        this.TOGGLE_DEVICE(device)
+    }
+
+    @Action
+    public SetLanguage(language: string) {
+        this.SET_LANGUAGE(language)
+    }
+    @Action
+    public SetSize(size: string) {
+        this.SET_SIZE(size)
+    }
     @Mutation
     private TOGGLE_SIDEBAR(withoutAnimation: boolean) {
         this.sidebar.opened = !this.sidebar.opened
@@ -63,27 +85,7 @@ class Layout extends VuexModule implements IAppState {
         setSize(this.size)
     }
 
-    @Action
-    public ToggleSideBar(withoutAnimation: boolean) {
-        this.TOGGLE_SIDEBAR(withoutAnimation)
-    }
-    @Action
-    public CloseSideBar(withoutAnimation: boolean) {
-        this.CLOSE_SIDEBAR(withoutAnimation)
-    }
 
-    @Action ToggleDevice(device: DeviceType) {
-        this.TOGGLE_DEVICE(device)
-    }
-
-    @Action
-    public SetLanguage(language: string) {
-        this.SET_LANGUAGE(language)
-    }
-    @Action
-    public SetSize(size: string) {
-        this.SET_SIZE(size)
-    }
 }
 
 export const LayoutModule = getModule(Layout)

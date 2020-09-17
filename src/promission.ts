@@ -6,7 +6,7 @@ import { Route } from 'vue-router'
 import { UserModule } from '@/store/modules/user'
 import { PermissionModule } from '@/store/modules/permission'
 import i18n from '@/lang' // Internationalization
-import settings from './settings'
+import settings from '@/setting'
 
 NProgress.configure({ showSpinner: false })
 
@@ -16,12 +16,12 @@ const getPageTitle = (key: string) => {
   const hasKey = i18n.te(`route.${key}`)
   if (hasKey) {
     const pageName = i18n.t(`route.${key}`)
-    return `${pageName} - ${settings.title}`
+    return `${pageName} - ${settings.system_name}`
   }
-  return `${settings.title}`
+  return `${settings.system_name}`
 }
 
-router.beforeEach(async(to: Route, _: Route, next: any) => {
+router.beforeEach(async (to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start()
 

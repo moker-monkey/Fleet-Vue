@@ -1,32 +1,44 @@
 <template>
   <div class="slide">
-    <sliderFace class="slide__face" :circleUrl="faceSrc" :username="username" :fold="fold"></sliderFace>
-    <Menu @select="select" class="slide__inner"></Menu>
+    <slider-logo v-if="showLogo" title="api-element-admin" :collapse="isCollapse" />
+    <!-- <sliderFace class="slide__face" :circleUrl="faceSrc" :username="username" :fold="fold"></sliderFace> -->
+    <Menu @select="select" :collapse="isCollapse"></Menu>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { State, Mutation } from "vuex-class";
-import Menu from "./components/el-slide-menu/menu.vue";
-import SliderFace from "./components/el-slide-menu/slider_face.vue";
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { State, Mutation } from 'vuex-class';
+import Menu from './components/el-slide-menu/menu.vue';
+import SliderFace from './components/el-slide-menu/slider_face.vue';
+import sliderLogo from './components/slideLogo/slideLogo.vue';
+import setting from '../setting';
 
 @Component({
-  name: "Slider",
+  name: 'Slider',
   components: {
     Menu,
     SliderFace,
+    sliderLogo,
   },
 })
 export default class Slider extends Vue {
-  public faceSrc: string = "";
-  public username: string = "";
+  get isCollapse() {
+    return this.fold;
+  }
+  public faceSrc: string = '';
+  public username: string = '';
+  public showLogo: boolean = true;
   @State public fold: any;
-  @Mutation("changeActive") public changeActive: any;
+  @Mutation('changeActive') public changeActive: any;
+  @Watch('fold')
+  public W_fold(this: any, value: boolean) {
+    this.isCollapse = value;
+  }
   public menuSelect(this: any, index: string, indexPath: string[]) {
     this.changeActive({ to: index, active: index });
   }
   public select(this: any, value: any) {
-    let i = {
+    const i = {
       index: value,
     };
     this.menuSelect(value.index, value.indexPath);

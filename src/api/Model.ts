@@ -9,16 +9,25 @@ import Mock from 'mockjs'
 // 3. 无侵入代码逻辑，保持组件的纯洁与通用性
 
 // TODO:数据上传前校验中心（考虑实现的可用性）
-// 使用场景： 每个form表单都需要验证
+// 使用场景： 每个form表单都需要验证,可以替代原来散落的form表单验证123、
 
-// TODO:添加一个用于发起request请求时触发异步埋点的方法
+// TODO:添加一个用于发起request请求时触发异步埋点的方法（优先级低）
 
-// TODO: 将mock和adapter改造成装饰器
+// TODO: 将mock和adapter改造成装饰器（优先级低）
 
-// TODO: 是否可以做一个vuex的插件，管理切换的状态，例如：当我们切换页面后再切回，如果是使用vue-router缓存，只会缓存dom元素，而vuex中的状态可能已经被改变，对于那些同步了全局的页面或组件就会出现问题，所以可以将vuex的值按照标签页的顺序列表存储起来，然后在点击对应的标签时，将对应的的vuex进行赋值
+// tslint:disable-next-line: max-line-length
+// TODO: 是否可以做一个vuex的插件，管理切换的状态，例如：当我们切换页面后再切回，如果是使用vue-router缓存，只会缓存dom元素，而vuex中的状态可能已经被改变，对于那些同步了全局的页面或组件就会出现问题，所以可以将vuex的值按照标签页的顺序列表存储起来，然后在点击对应的标签时，将对应的的vuex进行赋值（待验证）
+
+// TODO: 发起一个页面，可以写文档去直接生成api.ts，api-doc.ts,mock.ts 也可以通过读取api.ts的文件，在页面上编辑文档，并生成api-doc.ts，mock.ts
+
+// TODO: 能不能启用一个实时聊天的工具，该聊天工具可以将聊天内容可以快速整理成为工作流文档，能够融合进项目周期管理？（idea)
+
+// TODO: 能不能在api的页面管理api的前端与后端的开发进度？（idea)
+
+// TODO: 实现一个api组件，该组件能够管理api的调用，使用场景，在需要复杂api调用的时候，只需要给组件外嵌套一层api组件，传入api，params，refresh，rid,内部嵌套的api组件只需要考虑获取数据和使用数据，不需要操心数据的操作，api组件不产生任何的样式
 
 interface response_interceptors {
-    success(resposne: AxiosResponse): any,
+    success(response: AxiosResponse): any,
     error(error: AxiosError): any
 }
 interface request_interceptors {
@@ -26,13 +35,28 @@ interface request_interceptors {
     error(error: AxiosError): any
 }
 export default class Api {
-    success: any;
-    error: any;
+    public static mockDataList: any[] = [];
+    public static dataAdapter: any[] = [];
+    public success: any;
+    public error: any;
+    public isUseMock: boolean = false;
+    public baseurl!: string;
+    public mockSchema?: object;
+    public describe?: string;
+    private config!: AxiosRequestConfig;
+    private request_interceptor: request_interceptors = {
+        success(config) { },
+        error(err) { },
+    }
+    private response_interceptor: response_interceptors = {
+        success(config) { },
+        error(err) { },
+    }
     constructor(baseurl: string) {
-        this.baseurl = baseurl; //baseurl只到端口号，不包含端口号后的位置
+        this.baseurl = baseurl; // baseurl只到端口号，不包含端口号后的位置
         Axios.defaults.baseURL = baseurl;
     }
-    private config!: AxiosRequestConfig;
+
     public createApi(config?: AxiosRequestConfig) {
         this.startInterceptor()
         this.config = config || {};
@@ -46,17 +70,11 @@ export default class Api {
         this.response_interceptor.success = success;
         this.response_interceptor.error = error;
     }
-    private request_interceptor: request_interceptors = {
-        success(config) { },
-        error(err) { }
-    }
-    private response_interceptor: response_interceptors = {
-        success(config) { },
-        error(err) { }
-    }
+
     public startInterceptor() {
         Axios.interceptors.request.use((config: AxiosRequestConfig) => {
             config = Object.assign(config, this.request_interceptor.success.call(this, config) || {})
+            // tslint:disable-next-line: no-unused-expression
             this.isUseMock && (config = Object.assign(config, this.mock_interceptors(config) || {}))
             return config
         }, (err) => {
@@ -65,7 +83,7 @@ export default class Api {
             return Promise.reject(err)
         })
         Axios.interceptors.response.use((res: AxiosResponse) => {
-            res = Object.assign(res, this.data_adapter(res))  //开发时，我们只需要按照前端的需求来开发，如果数据不符合我们的期待，就可以通过添加适配器来转换数据，而不需要变更页面逻辑
+            res = Object.assign(res, this.data_adapter(res))  // 开发时，我们只需要按照前端的需求来开发，如果数据不符合我们的期待，就可以通过添加适配器来转换数据，而不需要变更页面逻辑
             res = Object.assign(res, this.response_interceptor.success.call(this, res) || {});
             return res
         }, (err) => {
@@ -77,47 +95,54 @@ export default class Api {
         for (let i of Api.mockDataList) {
             if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+${i.affix}`) : config.url === i.url) && config.method === i.mock.method.toLocaleLowerCase()) {
                 Mock.mock(new RegExp(i.route + '\\.*'), i.mock.schema)
-                console.log(`[Mock request]method:${i.mock.method}/url:${i.route}`)
+                console.warn(`[Mock request]method:${i.mock.method}/url:${i.route}`)
             }
         }
         return config
     }
     public data_adapter(res: AxiosResponse) {
         for (let i of Api.dataAdapter) {
-            if (i.affix ? resconfig.url?.match(`${i.route}\\d+${i.affix}`) : res.config.url === i.url) {
+            if (i.affix ? res.config.url?.match(`${i.route}\\d+${i.affix}`) : res.config.url === i.url) {
                 return i.adapter(res)
             }
         }
         return res
     }
     public mock_all(flag: any) {
+        // tslint:disable-next-line: no-unused-expression
         flag && console.warn(`warning: method mock_all of Api is turn on, that any request to server `)
         this.isUseMock = flag;
     }
-    public isUseMock: boolean = false;
-    public static mockDataList: any[] = [];
-    public static dataAdapter: any[] = [];
-    public baseurl!: string;
-    public mockSchema?: object;
-    public describe?: string;
+
+
 }
-class api {
-    // api只负责具体请求
+// tslint:disable-next-line: max-classes-per-file
+export class api {
+    public affix?: string | undefined;
+    public adapter: any = null;
+    public mock: any = {
+        method: '',
+        schema: {},
+    }
+    public isUseMock: boolean = false;
+    private route!: string;
+    private url!: string;
+    private axios: AxiosStatic = Axios;
+
     constructor(route: string, route1?: string, route2?: string, route3?: string, route4?: string, otherRoute?: string[]) {
         // scope与route后都不需要带/,有函数自动判断并添加
-        let route_list = [route, route1, route2, route3].concat(otherRoute)
+        const route_list = [route, route1, route2, route3, route4].concat(otherRoute)
         this.url = this.combination(route_list as string[]);
         this.route = this.url.split('#')[0]
         this.affix = this.url.split('#')[1] || ''
     }
-    public affix?: string | undefined;
-    private route!: string;
-    private url!: string;
-    private axios: AxiosStatic = Axios;
+
     public checkArgument(route: any, id?: number | string) {
-        let match = this.url.match('#')
+        const match = this.url.match('#')
         if (match) {
-            if (id != 0 && !id) throw `${this.url} 调用时必须传入id`
+            if (id !== 0 && !id) {
+                throw new Error(`${this.url} 调用时必须传入id`)
+            }
         } else {
             return route
         }
@@ -154,21 +179,18 @@ class api {
 
         return url
     }
-    public mock: any = {
-        method: '',
-        schema: {}
-    }
+
     public setMock(method: Method, schema: any) {
         this.mock = { method, schema };
         this.isUseMock = true;
         Api.mockDataList.push(this)
     }
-    public adapter: any = null;
+
     public setAdapter(callback: any) {
         this.adapter = callback;
         Api.dataAdapter.push(this)
     }
-    public isUseMock: boolean = false;
+
     public MockOn(flag: boolean) {
         this.isUseMock = flag;
         return this

@@ -13,15 +13,15 @@
           <span slot="title" style="margin-left:4px;">{{item.name}}</span>
         </template>
         <template>
-          <slide-menu-item v-for="child in item.children" :key="child.path" :item="child"></slide-menu-item>
+          <menu-item v-for="child in item.children" :key="child.path" :item="child"></menu-item>
         </template>
       </el-submenu>
-    </template>r
+    </template>
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-@Component({ name: "MenuItem" })
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+@Component({ name: 'MenuItem' })
 export default class MenuItem extends Vue {
   @Prop()
   public item: any;

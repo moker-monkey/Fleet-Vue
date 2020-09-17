@@ -13,6 +13,7 @@
     "@types/mockjs": "^1.0.3",
     "@types/nprogress": "^0.2.0",
     "@types/vue-i18n": "^7.0.0",
+    "ant-design-vue": "^1.6.5",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",

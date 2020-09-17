@@ -5,8 +5,7 @@
   ],
   "linterOptions": {
     "exclude": [
-      "node_modules/**",
-      "src/**"
+      "node_modules/**"
     ]
   },
   "rules": {
@@ -15,6 +14,7 @@
       "spaces",
       2
     ],
+    "semicolon": false,
     "interface-name": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
@@ -22,6 +22,12 @@
     "quotemark": [
       true,
       "single"
-    ]
+    ],
+    "class-name": false,
+    "variable-name": false,
+    "no-empty": false,
+    "max-line-length": false,
+    "no-console": false,
+    "trailing-comma": false
   }
 }
