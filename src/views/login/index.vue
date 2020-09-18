@@ -1,9 +1,10 @@
 <template>
   <div class="login-container">
+    <!-- :rules="loginRules" -->
     <el-form
       ref="loginForm"
       :model="loginForm"
-      :rules="loginRules"
+      
       class="login-form"
       autocomplete="on"
       label-position="left"
@@ -108,10 +109,10 @@ export default class extends Vue {
     username: 'admin',
     password: '111111',
   };
-  private loginRules = {
-    username: [{ validator: this.validateUsername, trigger: 'blur' }],
-    password: [{ validator: this.validatePassword, trigger: 'blur' }],
-  };
+  // private loginRules = {
+  //   username: [{ validator: this.validateUsername, trigger: 'blur' }],
+  //   password: [{ validator: this.validatePassword, trigger: 'blur' }],
+  // };
   private passwordType = 'password';
   private loading = false;
   private showDialog = false;

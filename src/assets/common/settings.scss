@@ -1,4 +1,4 @@
-/* layout */
+/* ===================== layout ===================== */
 /* header */
 // 顶部导航（大部分系统）：一级导航高度 64px，二级导航 48px。
 // 顶部导航（展示类页面）：一级导航高度 80px，二级导航 56px。
@@ -16,9 +16,10 @@ $slide-background-color:#fff;
 /* content */
 $content-wrap-background-color:#eef1f6;
 $content-background-color:#fff;
+$content-to-wrap-margin:10px;
 
-/*  design*/
 
+/* ===================== design ===================== */
 /* font-color */
 $major-font-color: #303133;
 $normal-font-color:#606266;
@@ -47,8 +48,6 @@ Arial,
 sans-serif;
 ;
 
-
-
 /* border */
 /* base color */
 $level1-border:#DCDFE6; // 1级
@@ -67,8 +66,6 @@ $extra-large-border-radius:30px;
 $normal-shadow:0 2px 4px rgba(0, 0, 0, .12),
 0 0 6px rgba(0, 0, 0, .04);
 $shallow-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
-
 
 
 

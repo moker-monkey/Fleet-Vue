@@ -15,7 +15,7 @@ export interface IUserState {
     email: string
 }
 
-let { login, getUserInfo, user, logout } = api;
+const { login, getUserInfo, user, logout } = api;
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
@@ -25,36 +25,6 @@ class User extends VuexModule implements IUserState {
     public introduction = ''
     public roles: string[] = []
     public email = ''
-
-    @Mutation
-    private SET_TOKEN(token: string) {
-        this.token = token
-    }
-
-    @Mutation
-    private SET_NAME(name: string) {
-        this.name = name
-    }
-
-    @Mutation
-    private SET_AVATAR(avatar: string) {
-        this.avatar = avatar
-    }
-
-    @Mutation
-    private SET_INTRODUCTION(introduction: string) {
-        this.introduction = introduction
-    }
-
-    @Mutation
-    private SET_ROLES(roles: string[]) {
-        this.roles = roles
-    }
-
-    @Mutation
-    private SET_EMAIL(email: string) {
-        this.email = email
-    }
 
     @Action
     public async Login(userInfo: { username: string, password: string }) {
@@ -123,6 +93,37 @@ class User extends VuexModule implements IUserState {
         this.SET_TOKEN('')
         this.SET_ROLES([])
     }
+
+    @Mutation
+    private SET_TOKEN(token: string) {
+        this.token = token
+    }
+
+    @Mutation
+    private SET_NAME(name: string) {
+        this.name = name
+    }
+
+    @Mutation
+    private SET_AVATAR(avatar: string) {
+        this.avatar = avatar
+    }
+
+    @Mutation
+    private SET_INTRODUCTION(introduction: string) {
+        this.introduction = introduction
+    }
+
+    @Mutation
+    private SET_ROLES(roles: string[]) {
+        this.roles = roles
+    }
+
+    @Mutation
+    private SET_EMAIL(email: string) {
+        this.email = email
+    }
+
 }
 
 export const UserModule = getModule(User)

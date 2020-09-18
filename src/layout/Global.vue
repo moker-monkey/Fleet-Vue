@@ -4,7 +4,9 @@
       <Slider />
     </el-aside>
     <el-container id="layout-content-wrap">
-      <el-header id="layout-header" :height="headerHeight"></el-header>
+      <el-header id="layout-header" :height="headerHeight">
+        <Header />
+      </el-header>
       <el-main id="layout-content">
         <transition name="slide-fade">
           <div class="loadingWrap" v-if="loading">
@@ -23,6 +25,7 @@ import { DeviceType, LayoutModule } from '../store/modules/layout';
 import { SettingsModule } from '../store/modules/settings';
 import ResizeMixin from './mixin/resize';
 import Slider from './Slider.vue';
+import Header from './Header.vue';
 import Views from './View.vue';
 import Loading from './components/loading/index.vue';
 import style from '@/assets/common/settings.scss';
@@ -32,6 +35,7 @@ import style from '@/assets/common/settings.scss';
     Slider,
     Loading,
     Views,
+    Header,
   },
 })
 export default class Gloabl extends mixins(ResizeMixin) {
@@ -62,6 +66,7 @@ export default class Gloabl extends mixins(ResizeMixin) {
   }
 }
 </script>
-<style lang="sass" scoped>
-@import '@/assets/common/layout.scss'
+<style lang="scss" scoped>
+@import "@/assets/common/layout.scss";
+
 </style>

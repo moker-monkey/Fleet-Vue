@@ -1,5 +1,7 @@
 # perfect-vue
 
+iconfont的核心条件就是让svg标签脱离文档流后，symbol就能够在任意为只引用了
+
 ## Project setup
 ```
 npm install

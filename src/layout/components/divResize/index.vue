@@ -42,7 +42,9 @@ export default class SliderFace extends Vue {
     return size;
   }
   public mounted() {
-    this.$refs.getSize.contentDocument.defaultView.addEventListener(
+    (this.$refs.getSize as
+      | HTMLObjectElement
+      | any).contentDocument.defaultView.addEventListener(
       'resize',
       (event: any) => {
         this.$nextTick(() => {
