@@ -24,3 +24,32 @@
 #layout-content-wrap {
     background-color: $content-wrap-background-color;
 }
+
+.icon-size-large{
+    .icon{
+        width:$svg-large-size;
+        height:$svg-large-size;
+    }
+    .iconfont{
+        font-size: $icon-size-large;
+    }
+} 
+
+.icon-size-normal{
+    .icon{
+        width:$svg-normal-size;
+        height:$svg-normal-size;
+    }
+    .iconfont{
+        font-size: $icon-size-normal;
+    }
+} 
+.icon-size-small{
+    .icon{
+        width:$svg-small-size;
+        height:$svg-small-size;
+    }
+    .iconfont{
+        font-size:$icon-size-small;
+    }
+} 

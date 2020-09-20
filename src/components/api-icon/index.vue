@@ -1,7 +1,14 @@
 <template>
-  <svg class="icon" aria-hidden="true">
-    <use :xlink:href="`#${name}`" />
-  </svg>
+  <div class="icon-wrap">
+    <template v-if="type==='font'">
+      <i :class="`iconfont ${name}`"></i>
+    </template>
+    <template v-if="type==='svg'">
+      <svg class="icon" aria-hidden="true">
+        <use :xlink:href="`#${name}`" />
+      </svg>
+    </template>
+  </div>
 </template>
 <script lang="ts">
 import {
@@ -14,12 +21,16 @@ import {
   Component,
 } from 'vue-property-decorator';
 
-
 @Component
 export default class extends Vue {
   @Prop()
   public name!: string;
+  @Prop({ default: 'svg' })
+  public type?: string;
 }
 </script>
 <style lang="scss" scoped>
+.icon-wrap {
+  display: inline-block;
+}
 </style>

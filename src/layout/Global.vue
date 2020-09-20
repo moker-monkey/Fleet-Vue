@@ -67,6 +67,4 @@ export default class Gloabl extends mixins(ResizeMixin) {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/common/layout.scss";
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <svgIcon></svgIcon>
+    <api-icon class="icon-size-large" type="font" name="icon-men"></api-icon>
   </div>
 </template>
 <script lang="ts">
@@ -13,13 +13,8 @@ import {
   Watch,
   Component,
 } from 'vue-property-decorator';
-import svgIcon from '@/components/api-icon/index.vue';
 
-@Component({
-  components: {
-    svgIcon,
-  },
-})
+@Component
 export default class Header extends Vue {}
 </script>
 <style lang="scss" scoped>
