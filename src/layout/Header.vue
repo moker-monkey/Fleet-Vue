@@ -13,7 +13,7 @@ import {
   Watch,
   Component,
 } from 'vue-property-decorator';
-import svgIcon from '@/components/api-svg/api-icon.vue';
+import svgIcon from '@/components/api-icon/index.vue';
 
 @Component({
   components: {

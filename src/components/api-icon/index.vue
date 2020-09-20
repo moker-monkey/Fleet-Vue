@@ -1,4 +1,8 @@
-<template></template>
+<template>
+  <svg class="icon" aria-hidden="true">
+    <use :xlink:href="`#${name}`" />
+  </svg>
+</template>
 <script lang="ts">
 import {
   Vue,
@@ -10,8 +14,12 @@ import {
   Component,
 } from 'vue-property-decorator';
 
+
 @Component
-export default class extends Vue {}
+export default class extends Vue {
+  @Prop()
+  public name!: string;
+}
 </script>
 <style lang="scss" scoped>
 </style>

@@ -2,8 +2,11 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import './plugins/element'
 import i18n from '@/plugins/i18n'
+import './plugins/element'
+import '@/plugins/apiVue'
+
+
 
 import '@/styles/element-variables.scss'
 import '@/styles/index.scss'
