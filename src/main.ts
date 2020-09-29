@@ -5,6 +5,7 @@ import store from './store';
 import i18n from '@/plugins/i18n'
 import '@/plugins/element'
 import '@/plugins/apiVue'
+import '@/router/routerListener'
 
 
 

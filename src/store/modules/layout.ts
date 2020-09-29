@@ -15,7 +15,8 @@ export interface IAppState {
         withoutAnimation: boolean
     }
     language: string
-    size: string
+    size: string,
+    isCollapase: boolean,
 
 }
 @Module({ dynamic: true, store, name: 'layout' })
@@ -27,6 +28,7 @@ class Layout extends VuexModule implements IAppState {
     public device = DeviceType.Desktop
     public language = getLocale()
     public size = getSize() || 'medium'
+    public isCollapase = false
 
     @Action
     public ToggleSideBar(withoutAnimation: boolean) {
@@ -49,6 +51,10 @@ class Layout extends VuexModule implements IAppState {
     @Action
     public SetSize(size: string) {
         this.SET_SIZE(size)
+    }
+    @Action
+    public setCollapase(collapase: boolean) {
+        this.SET_COLLAPASE(collapase)
     }
     @Mutation
     private TOGGLE_SIDEBAR(withoutAnimation: boolean) {
@@ -84,7 +90,11 @@ class Layout extends VuexModule implements IAppState {
         this.size = size
         setSize(this.size)
     }
-
+    @Mutation
+    private SET_COLLAPASE(isCollapase: boolean) {
+        this.isCollapase = isCollapase
+        setSize(this.size)
+    }
 
 }
 

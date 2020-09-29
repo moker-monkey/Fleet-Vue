@@ -1,21 +1,11 @@
 <template>
-  <el-container id="layout-global">
-    <el-aside id="layout-slider" :width="slideWidth">
-      <Slider />
-    </el-aside>
-    <el-container id="layout-content-wrap">
-      <el-header id="layout-header" :height="headerHeight">
-        <Header />
-      </el-header>
-      <el-main id="layout-content">
-        <transition name="slide-fade">
-          <div class="loadingWrap" v-if="loading">
-            <Loading />
-          </div>
-        </transition>
-        <Views />
-      </el-main>
-    </el-container>
+  <el-container class="framework">
+    <transition name="slide-fade">
+      <div class="loading-wrap" v-if="loading">
+        <Loading />
+      </div>
+    </transition>
+    <PC />
   </el-container>
 </template>
 <script lang="ts">
@@ -24,18 +14,20 @@ import { mixins } from 'vue-class-component';
 import { DeviceType, LayoutModule } from '../store/modules/layout';
 import { SettingsModule } from '../store/modules/settings';
 import ResizeMixin from './mixin/resize';
-import Slider from './Slider.vue';
-import Header from './Header.vue';
-import Views from './View.vue';
+import PC from './PC.vue';
 import Loading from './components/loading/index.vue';
-import style from '@/assets/common/settings.scss';
-
+/*
+layout 的3种布局方式：
+1. PC端布局，有(header(fix,no-fix))、(slider(show))、(tagsView(hidden,show)、views(pc,Horizontal，vertical))
+2. 移动端，有（header(fix,no-fix)）、(slider(toggle,show))、(tagsView（hidden,show）、views(mobil，Horizontal，vertical))
+3. Pad端，有（header(fix,no-fix)）、(slider(toggle,show))、(tagsView（hidden,show）、views(mobil，Horizontal，vertical))
+*/
+/*将三端拆分为三个组件是为了更好的复用 */
 @Component({
+  name: 'Global',
   components: {
-    Slider,
     Loading,
-    Views,
-    Header,
+    PC,
   },
 })
 export default class Gloabl extends mixins(ResizeMixin) {
@@ -48,19 +40,8 @@ export default class Gloabl extends mixins(ResizeMixin) {
     };
   }
 
-  get showSettings() {
-    return SettingsModule.showSettings;
-  }
-  get showTagsView() {
-    return SettingsModule.showTagsView;
-  }
-  get fixedHeader() {
-    return SettingsModule.fixedHeader;
-  }
-  public slideWidth: string = style.sliderWidth;
-  public headerHeight: string = style.headerHeight;
   public loading: boolean = false;
-  public collapsed: boolean = false;
+
   private handleClickOutside() {
     LayoutModule.CloseSideBar(false);
   }

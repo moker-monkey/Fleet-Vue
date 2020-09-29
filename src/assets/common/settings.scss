@@ -4,7 +4,7 @@
 // 顶部导航（展示类页面）：一级导航高度 80px，二级导航 56px。
 // 顶部导航高度的范围计算公式为：48+8n。
 $header-height: 50px;
-$second-header-height:48px;
+$tags-view-height:auto;
 $header-color: #fff;
 /* slide */
 // 侧边导航宽度的范围计算公式：200+8n。
@@ -79,10 +79,12 @@ $shallow-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
 
 
+
 :export {
     menuTextColor: $menu-text-color;
     menuBackgroundColor: $menu-background-color;
     menuActiveColor: $menu-active-text-color;
     sliderWidth: $slide-width;
     headerHeight: $header-height;
+    tagsViewHeight: $tags-view-height
 }

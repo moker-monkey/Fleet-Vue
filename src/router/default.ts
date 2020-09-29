@@ -1,34 +1,58 @@
 import { RouterItem } from './index.d'
 import Home from '../views/Home.vue';
+import Global from '../layout/Global.vue'
+import About from '../views/About.vue';
+import Login from '../views/login/index.vue'
 const routes: RouterItem[] = [
     {
         path: '/',
-        name: 'Home',
-        meta: { title: '首页', icon: 'mail' },
-        component: Home,
-    }, {
-        path: '/login',
-        name: 'Login',
-        meta: {
-            title: '登录',
-            icon: 'mail'
-        },
-        component: () => import(/* webpackChunkName: "staticRoute" */ '@/views/login/index.vue'),
+        component: Global,
+        redirect: 'dashboard',
+        meta: { hidden: false, title: '首页' },
         children: [
             {
-                path: '/home',
-                name: 'Home1',
-                meta: { title: '首页1', icon: 'mail' },
-                component: Home,
-                children: [{
-                    path: '/home1',
-                    name: 'Home12',
-                    meta: { title: '首页2', icon: 'mail' },
-                    component: Home,
-                }]
+                path: 'dashboard',
+                component: () => import('@/views/Home.vue'),
+                meta: {
+                    title: 'dashboard',
+                    icon: 'dashboard',
+                    affix: true
+                }
             }
         ]
-    }
+    },
+    {
+        path: '/redirect',
+        name: 'redirect',
+        component: Global,
+        meta: { hidden: true },
+        children: [
+            {
+                path: '/redirect/:path*',
+                component: () => import(/* webpackChunkName: "redirect" */ '@/layout/components/redirect/index.vue')
+            }
+        ]
+    },
+    {
+        path: '/login',
+        name: 'login',
+        meta: {
+            title: 'login',
+            icon: 'mail',
+            alwaysShow: true
+        },
+        redirect: 'about',
+        component: Global,
+        children: [
+            {
+                path: 'login',
+                name: 'login',
+                meta: { title: 'login' },
+                component: Login,
+            }
+        ]
+    },
+
     // {
     //     path: '/about',
     //     name: 'About',

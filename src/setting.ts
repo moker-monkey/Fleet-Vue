@@ -1,3 +1,10 @@
+enum elsize {
+    default = '',
+    mini = 'mini',
+    small = 'small',
+    medium = 'medium',
+}
+
 interface MySettings {
     system_name: string // Overrides the default title
     showSettings: boolean // Controls settings panel display
@@ -7,7 +14,8 @@ interface MySettings {
     errorLog: string[] // The env to enable the errorlog component, default 'production' only
     sidebarTextTheme: boolean // If true, will change active text color for sidebar based on theme
     devServerPort: number // Port number for webpack-dev-server
-    mockServerPort: number // Port number for mock server
+    mockServerPort: number // Port number for mock server,
+    elSize: elsize
 }
 
 const MySettings = {
@@ -16,6 +24,7 @@ const MySettings = {
     showSettings: true,
     showTagsView: true,
     showSidebarLogo: true,
-    sidebarTextTheme: true
+    sidebarTextTheme: true,
+    elSize: elsize.medium
 }
 export default MySettings;

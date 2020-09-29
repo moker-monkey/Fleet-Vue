@@ -19,7 +19,7 @@ const { login, getUserInfo, user, logout } = api;
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-    public token = getToken() || ''
+    public token = getToken() || '1233212'
     public name = ''
     public avatar = ''
     public introduction = ''
@@ -47,15 +47,22 @@ class User extends VuexModule implements IUserState {
         if (this.token === '') {
             throw Error('GetUserInfo: token is undefined!')
         }
-        const { data } = await getUserInfo.GET({ /* Your params here */ })
+        const { data } = await api.getUserInfo.GET() // 后端通过header中的token自动判断应该返回的数据
         if (!data) {
             throw Error('Verification failed, please Login again.')
         }
-        const { roles, name, avatar, introduction, email } = data.user
+        const { roles, name, avatar, introduction, email } = data.user || {
+            name: '游客',
+            avatar: '',
+            introduction: '他很懒什么都没写',
+            email: 'xxxx@sina.com'
+        }
+        const { menu } = data
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
             throw Error('GetUserInfo: roles must be a non-null array!')
         }
+
         this.SET_ROLES(roles)
         this.SET_NAME(name)
         this.SET_AVATAR(avatar)

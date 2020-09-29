@@ -1,6 +1,19 @@
 <template>
   <div class="header">
-    <api-icon class="icon-size-large" type="font" name="icon-men"></api-icon>
+    <div class="collspan-btn" @click="collapase">
+      <api-icon
+        class="icon-size-large"
+        type="font"
+        name="icon-men"
+        v-if="isCollapase"
+      ></api-icon>
+      <api-icon
+        class="icon-size-large"
+        type="font"
+        name="icon-hart"
+        v-else
+      ></api-icon>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -13,9 +26,17 @@ import {
   Watch,
   Component,
 } from 'vue-property-decorator';
+import { LayoutModule } from '../store/modules/layout';
 
 @Component
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  get isCollapase() {
+    return LayoutModule.isCollapase;
+  }
+  public collapase() {
+    LayoutModule.setCollapase(!LayoutModule.isCollapase);
+  }
+}
 </script>
 <style lang="scss" scoped>
 .header {

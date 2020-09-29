@@ -92,7 +92,7 @@ export default class Api {
         })
     }
     public mock_interceptors(config: AxiosRequestConfig) {
-        for (let i of Api.mockDataList) {
+        for (const i of Api.mockDataList) {
             if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+${i.affix}`) : config.url === i.url) && config.method === i.mock.method.toLocaleLowerCase()) {
                 Mock.mock(new RegExp(i.route + '\\.*'), i.mock.schema)
                 console.warn(`[Mock request]method:${i.mock.method}/url:${i.route}`)
@@ -101,9 +101,12 @@ export default class Api {
         return config
     }
     public data_adapter(res: AxiosResponse) {
-        for (let i of Api.dataAdapter) {
-            if (i.affix ? res.config.url?.match(`${i.route}\\d+${i.affix}`) : res.config.url === i.url) {
-                return i.adapter(res)
+        for (const i of Api.dataAdapter) {
+            // dataAdapter目前只支持转换get请求的返回数据，其他的暂时没有必要
+            if (res.config.url === i.url || new RegExp(`${i.route}\\d+/${i.affix}/`).test(res.config.url as string)) {
+                if (i.adapter) {
+                    return i.adapter(res)
+                }
             }
         }
         return res
@@ -113,8 +116,6 @@ export default class Api {
         flag && console.warn(`warning: method mock_all of Api is turn on, that any request to server `)
         this.isUseMock = flag;
     }
-
-
 }
 // tslint:disable-next-line: max-classes-per-file
 export class api {
@@ -147,8 +148,8 @@ export class api {
             return route
         }
     }
-    public AFFIX_GET(params: object = {}, id?: number | string) {
-        return this.axios.get(`${this.checkArgument(this.route, id)}${id ? id : ''}${this.affix ? this.affix : ''}`, { params })
+    public createAffixApi(affix: string) {
+        return new api(this.route, '#', affix)
     }
     public GET(params: object = {}, id?: number | string, affix?: string) {
         return this.axios.get(`${this.checkArgument(this.route)}${id ? id + '/' : ''}${affix ? affix + '/' : ''}`, { params })
@@ -160,7 +161,7 @@ export class api {
         return this.axios.put(`${this.route}${id}/`, params)
     }
     public DELETE(id: number | string) {
-        return this.axios.delete(`${this.route}${id}`)
+        return this.axios.delete(`${this.route}${id}/`)
     }
     public CUSTOM(config: AxiosRequestConfig) {
         return this.axios(Object.assign({ url: this.route }, config))
@@ -198,4 +199,6 @@ export class api {
     public getAxios() {
         return this.axios
     }
+
 }
+export { Axios }

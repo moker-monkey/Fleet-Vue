@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Global></Global>
+    <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
@@ -14,12 +14,13 @@ import {
   Component,
 } from 'vue-property-decorator';
 import Global from './layout/Global.vue';
+import AppMain from './layout/AppMain.vue';
 import '@/styles/index.scss';
 
 @Component({
   name: 'app',
   components: {
-    Global,
+    AppMain,
   },
 })
 export default class App extends Vue {}
@@ -27,6 +28,5 @@ export default class App extends Vue {}
 <style lang="scss">
 @import "@/assets/common/reset.scss";
 @import "@/assets/common/settings.scss";
-@import '@/assets/common/layout.scss';
-
+@import "@/assets/common/layout.scss";
 </style>

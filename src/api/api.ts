@@ -1,6 +1,6 @@
 
 import Api from './Model'
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import Axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 const _Api = new Api('http://localhost:8888')
 const config: AxiosRequestConfig = {
     headers: {
@@ -24,4 +24,9 @@ export let user = new api(scope, 'user')
 export let login = new api(scope, 'login')
 export let getUserInfo = new api(scope, 'userInfo')
 export let logout = new api(scope, 'logout')
+export let route = new api(scope, 'route') // 用于做路由权限
+
+export { api }  // 这样导出会直接挂载到module上，如果是export api会挂载到module.default后，
+export { _Api as Api }
+export { Axios }
 

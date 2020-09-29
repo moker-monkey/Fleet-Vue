@@ -1,55 +1,67 @@
 @import '@/assets/common/settings.scss';
 
-#layout-header {
-    height: $header-height;
-    flex-shrink: 0;
-    padding: 0;
-    background-color: $header-color;
-}
+.framework {
+    height: 100%;
 
-#layout-global {
-    height: 100vh;
-}
-
-#layout-slider {
-    background-color: $slide-background-color;
-}
-
-#layout-content {
-    padding: 0;
-    margin: $content-to-wrap-margin;
-    background-color: $content-background-color;
-}
-
-#layout-content-wrap {
-    background-color: $content-wrap-background-color;
-}
-
-.icon-size-large{
-    .icon{
-        width:$svg-large-size;
-        height:$svg-large-size;
+    .layout-header-pc {
+        height: $header-height;
+        flex-shrink: 0;
+        padding: 0;
+        background-color: $header-color;
     }
-    .iconfont{
+
+    .layout-global-pc {
+        height: 100vh;
+    }
+
+    .layout-slider-pc {
+        background-color: $slide-background-color;
+    }
+
+    .layout-content-pc {
+        padding: 0;
+        margin: $content-to-wrap-margin;
+        background-color: $content-background-color;
+        overflow: auto;
+    }
+
+    .layout-content-wrap-pc {
+        background-color: $content-wrap-background-color;
+        overflow: hidden;
+    }
+
+}
+
+/* icon size*/
+.icon-size-large {
+    .icon {
+        width: $svg-large-size;
+        height: $svg-large-size;
+    }
+
+    .iconfont {
         font-size: $icon-size-large;
     }
-} 
+}
 
-.icon-size-normal{
-    .icon{
-        width:$svg-normal-size;
-        height:$svg-normal-size;
+.icon-size-normal {
+    .icon {
+        width: $svg-normal-size;
+        height: $svg-normal-size;
     }
-    .iconfont{
+
+    .iconfont {
         font-size: $icon-size-normal;
     }
-} 
-.icon-size-small{
-    .icon{
-        width:$svg-small-size;
-        height:$svg-small-size;
+}
+
+.icon-size-small {
+    .icon {
+        width: $svg-small-size;
+        height: $svg-small-size;
     }
-    .iconfont{
-        font-size:$icon-size-small;
+
+    .iconfont {
+        font-size: $icon-size-small;
     }
-} 
+}

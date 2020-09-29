@@ -14,7 +14,7 @@ import enLocale from './en'
 import zhLocale from './zh'
 
 Vue.use(VueI18n)
-// not 
+// not
 const messages = {
   en: {
     ...enLocale,

@@ -1,41 +1,47 @@
 <template>
-  <div class="slide">
-    <slider-logo v-if="showLogo" title="api-element-admin" :collapse="isCollapse" />
-    <!-- <sliderFace class="slide__face" :circleUrl="faceSrc" :username="username" :fold="fold"></sliderFace> -->
-    <Menu @select="select" :collapse="isCollapse"></Menu>
+  <div :class="{ slide: true, notCollapse: !isCollapse }">
+    <slider-logo
+      v-if="showLogo"
+      title="api-element-admin"
+      :collapse="isCollapse"
+    />
+    <Menu
+      style="width: 100%"
+      @select="select"
+      :isCollapse="isCollapse"
+      :active="currentActive"
+    ></Menu>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { State, Mutation } from 'vuex-class';
 import Menu from './components/el-slide-menu/menu.vue';
-import SliderFace from './components/el-slide-menu/slider_face.vue';
-import sliderLogo from './components/slideLogo/slideLogo.vue';
+import sliderLogo from './components/el-slide-menu/slideLogo.vue';
 import setting from '../setting';
+import { TagsViewModule } from '@/store/modules/tags-view';
+import { LayoutModule } from '../store/modules/layout';
 
 @Component({
   name: 'Slider',
   components: {
     Menu,
-    SliderFace,
     sliderLogo,
   },
 })
 export default class Slider extends Vue {
   get isCollapse() {
-    return this.fold;
+    return LayoutModule.isCollapase;
   }
   public faceSrc: string = '';
   public username: string = '';
   public showLogo: boolean = true;
-  @State public fold: any;
-  @Mutation('changeActive') public changeActive: any;
-  @Watch('fold')
-  public W_fold(this: any, value: boolean) {
-    this.isCollapse = value;
+  get currentActive() {
+    return TagsViewModule.currentActive;
   }
+  // @Mutation("changeActive") public changeActive: any;
   public menuSelect(this: any, index: string, indexPath: string[]) {
-    this.changeActive({ to: index, active: index });
+    // this.changeActive({ to: index, active: index });
   }
   public select(this: any, value: any) {
     const i = {
@@ -49,5 +55,13 @@ export default class Slider extends Vue {
   }
 }
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+@import "@/assets/common/settings.scss";
+.slide {
+  height: 100%;
+  background-color: $slide-background-color;
+}
+.notCollapse {
+  width: $slide-width;
+}
 </style>

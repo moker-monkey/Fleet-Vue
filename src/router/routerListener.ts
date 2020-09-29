@@ -1,10 +1,11 @@
-import router from './router'
+import router from '.'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Message } from 'element-ui'
 import { Route } from 'vue-router'
 import { UserModule } from '@/store/modules/user'
 import { PermissionModule } from '@/store/modules/permission'
+import { TagsViewModule } from '@/store/modules/tags-view'
 import i18n from '@/lang' // Internationalization
 import settings from '@/setting'
 
@@ -22,10 +23,11 @@ const getPageTitle = (key: string) => {
 }
 
 router.beforeEach(async (to: Route, _: Route, next: any) => {
+  next()
   // Start progress bar
   NProgress.start()
 
-  // Determine whether the user has logged in
+  // // Determine whether the user has logged in
   if (UserModule.token) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
@@ -36,6 +38,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
       if (UserModule.roles.length === 0) {
         try {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
+          // 两种配置：1. 本地模式，本地模式主要是用于开发，2. 在线模式，在线模式用于有后端后进行在线配置，权限判断在于后端，返回什么展示什么即可
           await UserModule.GetUserInfo()
           const roles = UserModule.roles
           // Generate accessible routes map based on role
@@ -72,6 +75,8 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
 router.afterEach((to: Route) => {
   // Finish progress bar
   // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
+  console.log(to.path)
+  // TagsViewModule.setActivePath(to.path)
   NProgress.done()
 
   // set page title
