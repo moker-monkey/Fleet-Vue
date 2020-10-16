@@ -29,27 +29,25 @@
 // 2. cache的路由，每次点击都是新增一个tag，旧的页面被缓存指向tag，
 // 3. noCache的路由，每次点击都不会新增页面，都是使用了同一个
 // 4. 返回，内置的返回都是上一个跳转的路由
-import path from 'path';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import VueRouter, { Route, RouteRecord, RouteConfig } from 'vue-router';
-import { PermissionModule } from '@/store/modules/permission';
-import { TagsViewModule, ITagView } from '@/store/modules/tags-view';
-import ScrollPane from './ScrollPane.vue';
-import { RouterItem } from '@/router/index.d';
+import path from "path";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import VueRouter, { Route, RouteRecord, RouteConfig } from "vue-router";
+import { PermissionModule } from "@/store/modules/permission";
+import { TagsViewModule, ITagView } from "@/store/modules/tags-view";
+import ScrollPane from "./ScrollPane.vue";
 
 @Component({
-  name: 'TagsView',
+  name: "TagsView",
   components: {
     ScrollPane,
   },
 })
 export default class extends Vue {
-
   @Prop({ default: () => [] })
   public visitedViews!: ITagView[]; // 用于渲染tag
 
   @Prop({ default: () => [] })
-  public routes?: RouterItem[];
+  public routes?: RouteConfig[];
   private visible: boolean = false;
   private top: number = 0;
   private left: number = 0;
@@ -57,23 +55,23 @@ export default class extends Vue {
   private affixTags: ITagView[] = [];
 
   public mounted() {
-    console.log(this.visitedViews);
+    console.log("visitedViews", this.visitedViews);
     this.initTags();
     this.addTags();
   }
 
-  @Watch('$route')
+  @Watch("$route")
   private onRouteChange() {
     this.addTags();
     this.moveToCurrentTag();
   }
 
-  @Watch('visible')
+  @Watch("visible")
   private onVisibleChange(value: boolean) {
     if (value) {
-      document.body.addEventListener('click', this.closeMenu);
+      document.body.addEventListener("click", this.closeMenu);
     } else {
-      document.body.removeEventListener('click', this.closeMenu);
+      document.body.removeEventListener("click", this.closeMenu);
     }
   }
 
@@ -85,8 +83,9 @@ export default class extends Vue {
     return tag.meta && tag.meta.affix;
   }
 
-  private filterAffixTags(routes: RouteConfig[], basePath = '/') {
+  private filterAffixTags(routes: RouteConfig[], basePath = "/") {
     let tags: ITagView[] = [];
+    // console.log(routes);
     routes.forEach((route) => {
       if (route.meta && route.meta.affix) {
         const tagPath = path.resolve(basePath, route.path);
@@ -146,7 +145,7 @@ export default class extends Vue {
     const { fullPath } = view;
     this.$nextTick(() => {
       this.$router.replace({
-        path: '/redirect' + fullPath,
+        path: "/redirect" + fullPath,
       });
     });
   }
@@ -159,7 +158,7 @@ export default class extends Vue {
   }
 
   private closeOthersTags() {
-    this.$router.push(this.selectedTag as RouterItem);
+    this.$router.push(this.selectedTag as RouteConfig);
     TagsViewModule.delOthersViews(this.selectedTag);
     this.moveToCurrentTag();
   }
@@ -175,14 +174,14 @@ export default class extends Vue {
   private toLastView(visitedViews: ITagView[], view: ITagView) {
     const latestView = visitedViews.slice(-1)[0];
     if (latestView) {
-      this.$router.push(latestView as RouterItem);
+      this.$router.push(latestView as RouteConfig);
     } else {
       // Default redirect to the home page if there is no tags-view, adjust it if you want
-      if (view.name === 'Dashboard') {
+      if (view.name === "Dashboard") {
         // to reload home page
-        this.$router.replace({ path: '/redirect' + view.fullPath });
+        this.$router.replace({ path: "/redirect" + view.fullPath });
       } else {
-        this.$router.push('/');
+        this.$router.push("/");
       }
     }
   }

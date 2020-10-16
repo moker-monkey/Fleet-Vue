@@ -21,11 +21,12 @@
   </el-menu>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import routesConfigs from '../../../router/default';
-import MenuItem from './item.vue';
-import style from '@/assets/common/settings.scss';
-import api from '@/api';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import routesConfigs from "../../../router/default";
+import { PermissionModule } from "@/store/modules/permission";
+import MenuItem from "./item.vue";
+import style from "@/assets/common/settings.scss";
+import api from "@/api";
 @Component({
   components: {
     MenuItem,
@@ -46,14 +47,16 @@ export default class Menu extends Vue {
   get backgoundColor() {
     return style.menuBackgroundColor;
   }
-  public source = routesConfigs;
+  get source() {
+    return PermissionModule.routes;
+  }
   public create(this: any) {}
   public mounted(this: any) {}
-  @Watch('active')
+  @Watch("active")
   public act(o: any, n: any) {}
   public hanler(this: any) {}
   public selectMenu(this: any, index: string, indexPath: string[]) {
-    this.$emit('select', { index, indexPath });
+    this.$emit("select", { index, indexPath });
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import RouteConfigSingleView from '../../node_modules/vue-router/types'
 import RouteConfigMultipleViews from '../../node_modules/vue-router/types'
-export interface RouterMeta {
+export interface RouterMeta extends RouterMeta {
     title?: string
     icon?: string  // use class-name,
     hidden?: boolean // default false,
@@ -12,11 +12,3 @@ export interface RouterMeta {
     alwaysShow?: boolean // if father only have one child,use it
 }
 
-export interface RouterItem {
-    name?: string   // router-name
-    path: string
-    redirect?: string | 'noredirect' // 'a router-name'
-    meta?: RouterMeta
-    component: any
-    children?: RouterItem[]
-}

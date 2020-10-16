@@ -15,7 +15,7 @@ import {
 } from 'vue-property-decorator';
 import Global from './layout/Global.vue';
 import AppMain from './layout/AppMain.vue';
-import '@/styles/index.scss';
+import 'font-awesome/css/font-awesome.css';
 
 @Component({
   name: 'app',
@@ -29,4 +29,5 @@ export default class App extends Vue {}
 @import "@/assets/common/reset.scss";
 @import "@/assets/common/settings.scss";
 @import "@/assets/common/layout.scss";
+@import "@/assets/common/_transition.scss";
 </style>

@@ -1,5 +1,4 @@
 import apiIcon from './index.vue'
-import Vue from 'vue'
 
 const Plugin = {
     install(vue: any): unknown {

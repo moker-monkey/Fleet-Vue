@@ -9,13 +9,17 @@
   </el-container>
 </template>
 <script lang="ts">
-import { Vue, Watch, Component } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import { DeviceType, LayoutModule } from '../store/modules/layout';
-import { SettingsModule } from '../store/modules/settings';
-import ResizeMixin from './mixin/resize';
-import PC from './PC.vue';
-import Loading from './components/loading/index.vue';
+import { Vue, Watch, Component } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import { DeviceType, LayoutModule } from "../store/modules/layout";
+import { SettingsModule } from "../store/modules/settings";
+import ResizeMixin from "./mixin/resize";
+import PC from "./PC.vue";
+import Loading from "./components/loading/index.vue";
+import { PermissionModule } from "@/store/modules/permission";
+import { UserModule } from "@/store/modules/user";
+import settings from "@/setting";
+import router from "@/router/index";
 /*
 layout 的3种布局方式：
 1. PC端布局，有(header(fix,no-fix))、(slider(show))、(tagsView(hidden,show)、views(pc,Horizontal，vertical))
@@ -24,13 +28,20 @@ layout 的3种布局方式：
 */
 /*将三端拆分为三个组件是为了更好的复用 */
 @Component({
-  name: 'Global',
+  name: "Global",
   components: {
     Loading,
     PC,
   },
 })
 export default class Gloabl extends mixins(ResizeMixin) {
+  private handleClickOutside() {
+    LayoutModule.CloseSideBar(false);
+  }
+  
+  public mounted() {
+    
+  }
   get classObj() {
     return {
       hideSidebar: !this.sidebar.opened,
@@ -41,10 +52,6 @@ export default class Gloabl extends mixins(ResizeMixin) {
   }
 
   public loading: boolean = false;
-
-  private handleClickOutside() {
-    LayoutModule.CloseSideBar(false);
-  }
 }
 </script>
 <style lang="scss" scoped>

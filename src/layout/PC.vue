@@ -2,13 +2,11 @@
   <el-container class="layout-global-pc">
     <Slider />
     <el-container class="layout-content-wrap-pc">
-      <el-header class="layout-header" :height="headerHeight">
+      <el-header class="layout-header-pc" :height="headerHeight">
         <Header />
+        <TagsView :routes="routes" :visitedViews="visitedViews" />
       </el-header>
       <div class="layout-content-pc">
-        <div class="layout-header-info-pc" :height="tagsViewHeight">
-          <TagsView :routes="routes" :visitedViews="visitedViews" />
-        </div>
         <Views :visitedViews="visitedViews" />
       </div>
     </el-container>
@@ -24,15 +22,15 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import Slider from './Slider.vue';
-import Header from './Header.vue';
-import Views from './View.vue';
-import TagsView from './components/tagsView/index.vue';
-import style from '@/assets/common/settings.scss';
-import { SettingsModule } from '../store/modules/settings';
-import { PermissionModule } from '@/store/modules/permission';
-import { TagsViewModule, ITagView } from '@/store/modules/tags-view';
+} from "vue-property-decorator";
+import Slider from "./Slider.vue";
+import Header from "./Header.vue";
+import Views from "./View.vue";
+import TagsView from "./components/tagsView/index.vue";
+import style from "@/assets/common/settings.scss";
+import { SettingsModule } from "../store/modules/settings";
+import { PermissionModule } from "@/store/modules/permission";
+import { TagsViewModule, ITagView } from "@/store/modules/tags-view";
 
 @Component({
   components: {
@@ -45,7 +43,7 @@ import { TagsViewModule, ITagView } from '@/store/modules/tags-view';
 export default class extends Vue {
   public slideWidth: string = style.sliderWidth;
   public headerHeight: string = style.headerHeight;
-  public tagsViewHeight: string = style.tagsViewHeight;
+  public tagsHeight: string = style.tagsHeight;
   public collapsed: boolean = false;
   get showSettings() {
     return SettingsModule.showSettings;

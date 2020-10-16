@@ -20,9 +20,10 @@ _Api.mock_all(true)
 const api = _Api.createApi(config)
 const scope = 'api'
 
-export let user = new api(scope, 'user')
+export let user = new api(scope, 'user').setName('用户信息').setDescription('包含用户头像，用户username，id，等信息')
 export let login = new api(scope, 'login')
 export let getUserInfo = new api(scope, 'userInfo')
+export let getNotify = new api(scope, 'notify')
 export let logout = new api(scope, 'logout')
 export let route = new api(scope, 'route') // 用于做路由权限
 

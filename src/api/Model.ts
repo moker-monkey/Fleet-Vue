@@ -93,9 +93,10 @@ export default class Api {
     }
     public mock_interceptors(config: AxiosRequestConfig) {
         for (const i of Api.mockDataList) {
-            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+${i.affix}`) : config.url === i.url) && config.method === i.mock.method.toLocaleLowerCase()) {
-                Mock.mock(new RegExp(i.route + '\\.*'), i.mock.schema)
-                console.warn(`[Mock request]method:${i.mock.method}/url:${i.route}`)
+            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+${i.affix}`) : config.url === i.url) && i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
+                const index = i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase())
+                Mock.mock(new RegExp(i.route + '\\.*'), i.mock[index].schema)
+                console.warn(`[Mock request]method:${i.mock[index].methods}&&url:${i.route}`)
             }
         }
         return config
@@ -117,18 +118,24 @@ export default class Api {
         this.isUseMock = flag;
     }
 }
+
+interface mock {
+    methods: Method;
+    schema: any;
+}
 // tslint:disable-next-line: max-classes-per-file
 export class api {
     public affix?: string | undefined;
     public adapter: any = null;
-    public mock: any = {
-        method: '',
-        schema: {},
-    }
+    public mock: mock[] = []
     public isUseMock: boolean = false;
+    public alreadyMethod: Method[] = [];
     private route!: string;
     private url!: string;
     private axios: AxiosStatic = Axios;
+    private name!: string;
+    private description!: string;
+    private params!: string;
 
     constructor(route: string, route1?: string, route2?: string, route3?: string, route4?: string, otherRoute?: string[]) {
         // scope与route后都不需要带/,有函数自动判断并添加
@@ -147,6 +154,18 @@ export class api {
         } else {
             return route
         }
+    }
+    public setName(name: string) {
+        this.name = name;
+        return this;
+    }
+    public setDescription(description: string) {
+        this.description = description;
+        return this
+    }
+    public setParams(params: any) {
+        this.params = params;
+        return this
     }
     public createAffixApi(affix: string) {
         return new api(this.route, '#', affix)
@@ -181,8 +200,13 @@ export class api {
         return url
     }
 
-    public setMock(method: Method, schema: any) {
-        this.mock = { method, schema };
+    public setMock(methods: Method, schema: any) {
+        this.mock.push({ methods, schema });
+        if (this.alreadyMethod.indexOf(methods) !== -1) {
+            throw Error(`${this.name ? this.name : this.url}，Api定义了重复的Method,确保该api的每种method只设置了一个mock数据`)
+        } else {
+            this.alreadyMethod.push(methods)
+        }
         this.isUseMock = true;
         Api.mockDataList.push(this)
     }

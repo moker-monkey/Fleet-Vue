@@ -6,40 +6,68 @@ import { PermissionModule } from './permission'
 import { TagsViewModule } from './tags-view'
 import store from '@/store'
 
+interface menu {
+    path: string;
+    title: string;
+    children: menu[];
+}
+
+interface versions {
+    date: string;
+    description: string;
+    unread: boolean;
+}
+
+interface notify {
+    date: string;
+    description: string;
+    unread: boolean;
+}
+
+interface unread_length {
+    total: number;
+    versions: number;
+    notify: number;
+}
+
 export interface IUserState {
     token: string
     name: string
     avatar: string
     introduction: string
-    roles: string[]
     email: string
+    menu: menu[]
 }
 
 const { login, getUserInfo, user, logout } = api;
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-    public token = getToken() || '1233212'
+    public token = getToken() as string;
     public name = ''
     public avatar = ''
     public introduction = ''
-    public roles: string[] = []
     public email = ''
+    public menu: menu[] = [];
+    public unread_length?: unread_length;
+    public notify: notify[] = [];
+    public versions: versions[] = [];
 
     @Action
     public async Login(userInfo: { username: string, password: string }) {
+        // tslint:disable-next-line: prefer-const
         let { username, password } = userInfo
         username = username.trim()
         const { data } = await login.GET({ username, password })
-        setToken(data.accessToken)
-        this.SET_TOKEN(data.accessToken)
+        // 两种方式都支持，cookie模式与localstorage模式
+        setToken(data.token)
+        this.SET_TOKEN(data.token)
     }
 
     @Action
     public ResetToken() {
         removeToken()
         this.SET_TOKEN('')
-        this.SET_ROLES([])
     }
 
     @Action
@@ -47,43 +75,32 @@ class User extends VuexModule implements IUserState {
         if (this.token === '') {
             throw Error('GetUserInfo: token is undefined!')
         }
+
         const { data } = await api.getUserInfo.GET() // 后端通过header中的token自动判断应该返回的数据
         if (!data) {
             throw Error('Verification failed, please Login again.')
         }
-        const { roles, name, avatar, introduction, email } = data.user || {
-            name: '游客',
-            avatar: '',
-            introduction: '他很懒什么都没写',
-            email: 'xxxx@sina.com'
-        }
-        const { menu } = data
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-            throw Error('GetUserInfo: roles must be a non-null array!')
-        }
+        const { name, avatar, introduction, email, menus } = data
 
-        this.SET_ROLES(roles)
-        this.SET_NAME(name)
+        this.SET_USERNAME(name)
         this.SET_AVATAR(avatar)
+        this.SET_MENU(menus)
         this.SET_INTRODUCTION(introduction)
         this.SET_EMAIL(email)
     }
 
     @Action
-    public async ChangeRoles(role: string) {
-        // Dynamically modify permissions
-        const token = role + '-token'
-        this.SET_TOKEN(token)
-        setToken(token)
-        await this.GetUserInfo()
-        resetRouter()
-        // Generate dynamic accessible routes based on roles
-        PermissionModule.GenerateRoutes(this.roles)
-        // Add generated routes
-        router.addRoutes(PermissionModule.dynamicRoutes)
-        // Reset visited views and cached views
-        TagsViewModule.delAllViews()
+    public async GetNotify() {
+        if (this.token === '') {
+            throw Error('GetUserInfo: token is undefined!')
+        }
+        const { data } = await api.getNotify.GET()
+        const { versions, notify } = data
+        this.SET_VERSIONS(versions)
+        this.SET_NOTIFY(notify)
+        const unread_versions_length = versions.filter((item: any) => item.unread).length
+        const unread_notify_length = notify.filter((item: any) => item.unread).length
+        this.SET_UNREAD_LENGTH({ total: (unread_versions_length + unread_notify_length), versions: unread_versions_length, notify: unread_notify_length })
     }
 
     @Action
@@ -91,14 +108,13 @@ class User extends VuexModule implements IUserState {
         if (this.token === '') {
             throw Error('LogOut: token is undefined!')
         }
-        await logout.GET()
+        // await logout.GET()
         removeToken()
         resetRouter()
 
         // Reset visited views and cached views
         TagsViewModule.delAllViews()
         this.SET_TOKEN('')
-        this.SET_ROLES([])
     }
 
     @Mutation
@@ -107,7 +123,7 @@ class User extends VuexModule implements IUserState {
     }
 
     @Mutation
-    private SET_NAME(name: string) {
+    private SET_USERNAME(name: string) {
         this.name = name
     }
 
@@ -121,16 +137,27 @@ class User extends VuexModule implements IUserState {
         this.introduction = introduction
     }
 
-    @Mutation
-    private SET_ROLES(roles: string[]) {
-        this.roles = roles
-    }
 
     @Mutation
     private SET_EMAIL(email: string) {
         this.email = email
     }
-
+    @Mutation
+    private SET_MENU(menu: menu[]) {
+        this.menu = menu
+    }
+    @Mutation
+    private SET_VERSIONS(versions: versions[]) {
+        this.versions = versions
+    }
+    @Mutation
+    private SET_NOTIFY(notify: notify[]) {
+        this.notify = notify
+    }
+    @Mutation
+    private SET_UNREAD_LENGTH(unread_length: unread_length) {
+        this.unread_length = unread_length
+    }
 }
 
 export const UserModule = getModule(User)

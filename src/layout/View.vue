@@ -1,5 +1,5 @@
 <template>
-  <div class="views">
+  <div class="layout-view">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
@@ -9,9 +9,9 @@
 </template>
 <script lang="ts">
 // view应该接受动态设置
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ITagView } from '@/store/modules/tags-view';
-import { TagsViewModule } from '@/store/modules/tags-view';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { ITagView } from "@/store/modules/tags-view";
+import { TagsViewModule } from "@/store/modules/tags-view";
 export default class extends Vue {
   @Prop({ default: () => [] })
   public visitedViews: ITagView[] = [];
@@ -29,11 +29,4 @@ export default class extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.views {
-  height: 100%;
-}
-.routers {
-  width: 100%;
-  height: 100%;
-}
 </style>

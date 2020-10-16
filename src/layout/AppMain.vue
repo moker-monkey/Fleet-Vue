@@ -1,6 +1,5 @@
 <template>
   <section class="app-main">
-    
   </section>
 </template>
 

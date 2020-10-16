@@ -1,7 +1,7 @@
 <template>
   <div class="icon-wrap">
     <template v-if="type==='font'">
-      <i :class="`iconfont ${name}`"></i>
+      <i :class="`${name}`"></i>
     </template>
     <template v-if="type==='svg'">
       <svg class="icon" aria-hidden="true">
@@ -32,5 +32,6 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .icon-wrap {
   display: inline-block;
+  vertical-align: middle;
 }
 </style>

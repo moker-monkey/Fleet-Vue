@@ -1,5 +1,8 @@
 export default {
   route: {
+    'about': '关于',
+    'me': '关于我',
+    'compony': '关于公司',
     'dashboard': '首页',
     'documentation': '文档',
     'guide': '引导页',

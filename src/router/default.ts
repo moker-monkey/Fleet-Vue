@@ -1,21 +1,26 @@
-import { RouterItem } from './index.d'
+
 import Home from '../views/Home.vue';
 import Global from '../layout/Global.vue'
 import About from '../views/About.vue';
 import Login from '../views/login/index.vue'
-const routes: RouterItem[] = [
+import ApiGenerate from '../example/api-generate/index.vue'
+
+import { RouteConfig } from 'vue-router';
+const routes: RouteConfig[] = [
     {
-        path: '/',
+        path: '/overview',
         component: Global,
         redirect: 'dashboard',
-        meta: { hidden: false, title: '首页' },
+        meta: { showBreadcrumb: false, title: 'dashboard', icon: 'dashboard', isHome: true, },
         children: [
             {
                 path: 'dashboard',
+                name: 'dashboard',
                 component: () => import('@/views/Home.vue'),
                 meta: {
                     title: 'dashboard',
                     icon: 'dashboard',
+
                     affix: true
                 }
             }
@@ -39,27 +44,19 @@ const routes: RouterItem[] = [
         meta: {
             title: 'login',
             icon: 'mail',
-            alwaysShow: true
+            hidden: true
         },
-        redirect: 'about',
-        component: Global,
-        children: [
-            {
-                path: 'login',
-                name: 'login',
-                meta: { title: 'login' },
-                component: Login,
-            }
-        ]
+        component: Login
     },
-
-    // {
-    //     path: '/about',
-    //     name: 'About',
-    //     // route level code-splitting
-    //     // this generates a separate chunk (about.[hash].js) for this route
-    //     // which is lazy-loaded when the route is visited.
-    //     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    // },
+    {
+        path: '/api',
+        name: 'api',
+        meta: {
+            title: 'api',
+            icon: 'api',
+            hidden: true
+        },
+        component: ApiGenerate
+    },
 ];
 export default routes

@@ -1,13 +1,22 @@
 <template>
   <fragment v-if="!item.meta || !item.meta.hidden">
-    <template v-if="!alwaysShowRootMenu&& theOnlyOneChild && !theOnlyOneChild.children">
-      <item-link v-if="theOnlyOneChild.meta" :to="resolvePath(theOnlyOneChild.path)">
+    <template
+      v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
+    >
+      <item-link
+        v-if="theOnlyOneChild.meta"
+        :to="resolvePath(theOnlyOneChild.path)"
+      >
         <el-menu-item :index="resolvePath(theOnlyOneChild.path)">
           <api-icon
-            :type="theOnlyOneChild.meta.icon_class?'icon':'svg'"
-            :name="theOnlyOneChild.meta.icon_class||theOnlyOneChild.meta.icon_svg"
+            :type="theOnlyOneChild.meta.icon_class ? 'icon' : 'svg'"
+            :name="
+              theOnlyOneChild.meta.icon_class || theOnlyOneChild.meta.icon_svg
+            "
           ></api-icon>
-          <span slot="title">{{$t('route.'+theOnlyOneChild.meta.title)}}</span>
+          <span slot="title" style="margin-left: 4px">{{
+            $t("route." + theOnlyOneChild.meta.title)
+          }}</span>
         </el-menu-item>
       </item-link>
     </template>
@@ -15,10 +24,12 @@
       <el-submenu :index="resolvePath(item.path)" popper-append-to-body>
         <template slot="title">
           <api-icon
-            :type="item.icon_class?'icon':'svg'"
-            :name="item.icon_class||item.meta.icon_svg"
+            :type="item.icon_class ? 'icon' : 'svg'"
+            :name="item.meta.icon_class || item.meta.icon_svg"
           ></api-icon>
-          <span slot="title" style="margin-left:4px;">{{$t('route.'+item.meta.title)}}</span>
+          <span slot="title" style="margin-left: 4px">{{
+            $t("route." + item.meta.title)
+          }}</span>
         </template>
         <template v-if="item.children">
           <menu-item
@@ -33,16 +44,16 @@
   </fragment>
 </template>
 <script lang="ts">
-import path from 'path';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { isExternal } from '@/utils/validate';
-import itemLink from './itemLink.vue';
-import { RouterItem } from '@/router/index.d.ts';
-@Component({ name: 'MenuItem', components: { itemLink } })
+import path from "path";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { isExternal } from "@/utils/validate";
+import itemLink from "./itemLink.vue";
+import { RouteConfig } from "vue-router";
+@Component({ name: "MenuItem", components: { itemLink } })
 export default class MenuItem extends Vue {
   @Prop()
   public item: any;
-  @Prop({ default: '' }) private basePath!: string;
+  @Prop({ default: "" }) private basePath!: string;
   public hasOneShowingChild(children: any = [], parent: any) {
     const showingChildren = children.filter((item: any) => {
       if (item.meta && !item.meta.hidden) {
@@ -63,7 +74,7 @@ export default class MenuItem extends Vue {
   }
   get showingChildNumber() {
     if (this.item.children) {
-      const showingChildren = this.item.children.filter((item: RouterItem) => {
+      const showingChildren = this.item.children.filter((item: RouteConfig) => {
         if (item.meta && item.meta.hidden) {
           return false;
         } else {
@@ -86,7 +97,7 @@ export default class MenuItem extends Vue {
         }
       }
     }
-    return { ...this.item, path: '' };
+    return { ...this.item, path: "" };
   }
   private resolvePath(routePath: string) {
     // 只要不是外部链接，就将当前的routePath和this.basePath组合起来

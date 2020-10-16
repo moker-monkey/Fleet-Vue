@@ -16,3 +16,10 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .home{
+    height:100%;
+    background: #fff;
+    margin-top:10px;
+  }
+</style>

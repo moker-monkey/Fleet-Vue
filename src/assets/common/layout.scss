@@ -4,14 +4,19 @@
     height: 100%;
 
     .layout-header-pc {
-        height: $header-height;
+        height: $layout-header-height;
         flex-shrink: 0;
         padding: 0;
         background-color: $header-color;
     }
 
+    .layout-header-info-pc {
+        height: $tags-height;
+    }
+
     .layout-global-pc {
-        height: 100vh;
+        height: 100%;
+        overflow: hidden;
     }
 
     .layout-slider-pc {
@@ -19,15 +24,22 @@
     }
 
     .layout-content-pc {
-        padding: 0;
+        padding: 0 20px;
         margin: $content-to-wrap-margin;
         background-color: $content-background-color;
-        overflow: auto;
+        height: $content-height;
+        overflow: hidden;
     }
 
     .layout-content-wrap-pc {
-        background-color: $content-wrap-background-color;
+        height: 100%;
         overflow: hidden;
+    }
+
+    // views 
+    .layout-view {
+        height: $content-view-height;
+        overflow: auto;
     }
 
 }
@@ -39,7 +51,8 @@
         height: $svg-large-size;
     }
 
-    .iconfont {
+    .iconfont,
+    .fa {
         font-size: $icon-size-large;
     }
 }
@@ -50,7 +63,8 @@
         height: $svg-normal-size;
     }
 
-    .iconfont {
+    .iconfont,
+    .fa {
         font-size: $icon-size-normal;
     }
 }
@@ -61,7 +75,9 @@
         height: $svg-small-size;
     }
 
-    .iconfont {
+    .iconfont,
+    .fa {
         font-size: $icon-size-small;
     }
+
 }

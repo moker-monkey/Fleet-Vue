@@ -1,11 +1,14 @@
 /* ===================== layout ===================== */
+$content-padding:0 20px;
 /* header */
 // 顶部导航（大部分系统）：一级导航高度 64px，二级导航 48px。
 // 顶部导航（展示类页面）：一级导航高度 80px，二级导航 56px。
 // 顶部导航高度的范围计算公式为：48+8n。
 $header-height: 50px;
-$tags-view-height:auto;
+$tags-height:34px;
+$layout-header-height:$header-height+ $tags-height;
 $header-color: #fff;
+$header-padding:$content-padding;
 /* slide */
 // 侧边导航宽度的范围计算公式：200+8n。
 $slide-width:200px;
@@ -14,12 +17,13 @@ $menu-active-text-color:#229b72;
 $menu-background-color: #fff;
 $slide-background-color:#fff;
 /* content */
-$content-wrap-background-color:#eef1f6;
-$content-background-color:#fff;
-$content-to-wrap-margin:10px;
-
+$content-background-color:#eef1f6;
+$content-to-wrap-margin:0; // 内容页的边界margin
+$content-height:calc(100% - (#{$layout-header-height}));
+$content-view-height:100%;
 
 /* ===================== design ===================== */
+// 设计部分是在于开发业务中使用的
 /* font-color */
 $major-font-color: #303133;
 $normal-font-color:#606266;
@@ -85,6 +89,7 @@ $shallow-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.1);
     menuBackgroundColor: $menu-background-color;
     menuActiveColor: $menu-active-text-color;
     sliderWidth: $slide-width;
-    headerHeight: $header-height;
-    tagsViewHeight: $tags-view-height
+    headerHeight: $layout-header-height;
+    tagsHeight: $tags-height;
+    viewHeight: $content-view-height;
 }
