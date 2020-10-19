@@ -13,13 +13,17 @@ import {
   Watch,
   Component,
 } from 'vue-property-decorator';
-import CodeMirror from './formatting'; // 通过了插件导出的CodeMirror
+import CodeMirror from './codemirror-plugin'; // 通过了插件导出的CodeMirror
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material-darker.css';
+import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/selection/active-line';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
+// import "codemirror/addon/hint/anyword-hint.js";
+import { showHint } from 'codemirror';
+import { HintFunction } from 'codemirror';
 
 @Component
 export default class extends Vue {
@@ -29,31 +33,57 @@ export default class extends Vue {
   @Model('blur')
   public value: any;
   public idbLexicon: any = {
-    number: ['num_type', 'count', 'min', 'max', 'dmin', 'dmax'], // 'num_type':natural|integer|float
-    string: ['str_type', 'count', 'min', 'max', 'list'], // 'str_type':pick|word|paragraph|sentence|title|cparagraph|csentence|cword|ctitle|first|last|name|cfrist|clast|cname|url|domain|protocal|tld|email|ip|region|province|city|country|zip|guid|id|color|hex|rgb|rgba|hsl|image|dataImage|now|datetime|time|date
-    boolean: ['boolean'],
-    regex: ['expression'],
+    number: ['\'@natural()\'', '@integer()', '@float()'], // 'num_type':natural|integer|float
+    string: [
+      '"@pick([])"',
+      '"@word()"',
+      '"@paragraph()"',
+      '"@sentence()"',
+      '"@title()"',
+      '"@cparagraph()"',
+      '"@csentence()"',
+      '"@cword()"',
+      '"@ctitle()"',
+      '"@first()"',
+      '"@last()"',
+      '"@name()"',
+      '"@cfrist()"',
+      '"@clast()"',
+      '"@cname()"',
+      '"@url()"',
+      '"@domain()"',
+      '"@protocal()"',
+      '"@tld()"',
+      '"@email()"',
+      '"@ip()"',
+      '"@region()"',
+      '"@province()"',
+      '"@city()"',
+      '"@country()"',
+      '"@zip()"',
+      '"@guid()"',
+      '"@id()"',
+      '"@color()"',
+      '"@hex()"',
+      '"@rgb()"',
+      '"@rgba()"',
+      '"@hsl()"',
+      '"@image()"',
+      '"@dataImage()"',
+      '"@now()"',
+      '"@datetime()"',
+      '"@time()"',
+      '"@date()"',
+    ], // 'str_type':pick|word|paragraph|sentence|title|cparagraph|csentence|cword|ctitle|first|last|name|cfrist|clast|cname|url|domain|protocal|tld|email|ip|region|province|city|country|zip|guid|id|color|hex|rgb|rgba|hsl|image|dataImage|now|datetime|time|date
+    boolean: ['"@boolean()"'],
+    regex: ['/\d{5,10}/'],
     list: ['list_type', 'min', 'max'], // 'list_type':'number|string|object|list'};
   };
   @Watch('value')
   public W_value(this: any, value: any) {
     this.editor.setValue(JSON.stringify(this.value, null, 2));
   }
-  @Watch('idbLexicon')
-  public W_idbLexicon(this: any, value: any, oldValue: any) {
-    const hintOptions = this.editor.getOption('hintOptions');
-    this.editor.setOption('hintOptions', {
-      ...hintOptions,
-      table: {
-        ...hintOptions.tables,
-        ...value,
-      },
-    });
-    if (this.isRealTimeTip) {
-      this.editor.showHint();
-    }
-    this.isRealTimeTip = false;
-  }
+
   public mounted() {
     this.init();
     setTimeout(() => {
@@ -62,33 +92,42 @@ export default class extends Vue {
     }, 10);
   }
   public init() {
-    console.log('readonly' in this.$attrs);
-    const hint = this.idbLexicon;
+    const _this = this;
     this.editor = CodeMirror.fromTextArea(
       this.$refs.txt as HTMLTextAreaElement,
       {
-        mode: 'application/json',
+        mode: {
+          name: 'application/json',
+        },
         theme: 'material-darker',
         lineNumbers: true,
+        showHint: true,
         readOnly: 'readonly' in this.$attrs || this.$attrs.readonly,
+        styleActiveLine: true,
+        lineWrapping: true,
         extraKeys: {
-          // F7: function autoFormat(editor: any) {
-          //   console.log('auto')
-          //   var totalLines = editor.lineCount();
-          //   editor.autoFormatRange({ line: 0, ch: 0 }, { line: totalLines });
-          // }, //代码格式化
+          Ctrl: 'autocomplete',
         },
         hintOptions: {
-          // 自定义提示选项
           completeSingle: false,
-          hint: () => {
-            return ['good'];
+          hint(editor: CodeMirror.Editor) {
+            const __Cursor = editor.getDoc().getCursor();
+            const __CurLine = editor.getLine(__Cursor.line);
+            const __Token = editor.getTokenAt(__Cursor);
+            const { string } = __Token;
+            const end = __Cursor.ch;
+            const start = end - string.length;
+            return {
+              list: _this.matchMockType(string),
+              from: CodeMirror.Pos(__Cursor.line, start),
+              to: CodeMirror.Pos(__Cursor.line, end),
+            };
           },
         },
       }
     );
     this.editor.setSize('100%', this.height + 'px');
-    this.editor.on('blur', (editor: any) => {
+    this.editor.on('blur', (editor: CodeMirror.Editor) => {
       try {
         const __string = JSON.parse(editor.getValue());
         this.$emit('blur', __string);
@@ -96,25 +135,19 @@ export default class extends Vue {
         this.$emit('error', `JSON解析错误：${err}`);
       }
     });
-    CodeMirror.registerHelper('hint', 'foo', 'myFoo')
   }
-  public handleCtrlShowHint(this: any, editor: any) {
-    const __Cursor = editor.getDoc().getCursor();
-    const __CurLine = editor.getLine(__Cursor.line);
-    const __Token = editor.getTokenAt(__Cursor);
-    const { string } = __Token;
-    const end = __Cursor.ch;
-    const start = end - string.length;
-
-    editor.showHint({
-      hint() {
-        return {
-          list: ['good'],
-          form: CodeMirror.Pos(__Cursor.line, start),
-          to: CodeMirror.Pos(__Cursor.line, end),
-        };
-      },
+  public matchMockType(this: any, str: string): string[] {
+    const keys: string[] = Object.keys(this.idbLexicon).filter((item: string) => {
+      return item.indexOf(str) != -1;
     });
+    const values = keys.map((item: any) => {
+      return this.idbLexicon[item];
+    });
+    return keys.length
+      ? values.reduce((pre: any[], cur: any[]) => {
+          pre.concat(cur);
+        })
+      : [];
   }
   public refresh() {
     this.editor && this.editor.refresh();
@@ -123,5 +156,10 @@ export default class extends Vue {
 </script>
 <style lang="scss" scoped>
 .codemirrorWrap {
+}
+</style>
+<style lang="scss">
+.CodeMirror-hints {
+  z-index: 10000;
 }
 </style>
