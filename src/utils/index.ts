@@ -1,4 +1,5 @@
-import format from './dateHandler'
+import { format } from './dateHelper'
+import { isJSON } from './jsonHelper'
 
 declare global {
     interface Array<T> {
@@ -11,5 +12,6 @@ declare global {
 
 Date.prototype.Format = format;
 
-export { default as Format } from './dateHandler'
+export { format } from './dateHelper'
+export { isJSON } from './jsonHelper'
 

@@ -6,7 +6,7 @@ api.login.setMock('GET', {
     token: Random.guid(),
 })
 api.getUserInfo.setMock('GET', {
-    username: 'xiaochangming',
+    username: {},
     avatar: Random.image('100x100', Random.color(), Random.cfirst()),
     introduction: '他很懒什么都没写。',
     email: 'lkjhuy@sina.com',

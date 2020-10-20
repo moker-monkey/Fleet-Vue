@@ -59,15 +59,19 @@
               <!-- <CodeMirror :value="currentTabsData.GET" /> -->
             </el-tab-pane>
             <el-tab-pane label="Mock">
+              <div class="mock-header">
+                <el-button @click="generateMockSchema(currentApi, currentTabsData)"
+                  >生成mock代码</el-button
+                >
+                <el-button>生成table代码</el-button>
+              </div>
               <div class="mock">
                 <div class="header"></div>
                 <div class="content">
                   <div class="mock-generate">
                     <CodeMirror v-model="currentTabsData.GET" />
                   </div>
-                  <el-button @click="generateMock('GET')"
-                    >>>></el-button
-                  >
+                  <el-button @click="setMock('GET')">>>></el-button>
                   <div class="mock-generate">
                     <CodeMirror :value="mockGenerateData.GET" readonly />
                   </div>
@@ -99,6 +103,7 @@ import api from "@/api";
 import CodeMirror from "./components/js-codemirror.vue";
 import Mock from "mockjs";
 import MockGenerate from "./components/mock-generate.vue";
+import isJSON from "is-json";
 
 @Component({
   components: {
@@ -143,16 +148,25 @@ export default class extends Vue {
       }
     }
   }
-  public generateMock(method: string) {
-    console.log("this.currentTabsData", this.currentTabsData);
-    this.$set(
-      this.mockGenerateData,
-      method,
-      Mock.mock(this.currentTabsData[method])
-    );
+  public generateMockSchema(api: any, schema: any) {
+    console.log(api);
+  }
+  public setMock(method: string) {
+    if (isJSON(JSON.stringify(this.currentTabsData[method]))) {
+      this.$set(
+        this.mockGenerateData,
+        method,
+        Mock.mock(this.currentTabsData[method])
+      );
+    } else {
+      this.$set(
+        this.mockGenerateData,
+        method,
+        Mock.mock({ error: "不是一个有效的JSON格式" })
+      );
+    }
 
     // this.mockGenerateData[method] = Mock.mock(this.currentTabsData[method]);
-    console.log(this.mockGenerateData[method]);
   }
   public getCurrentApi(data: any) {
     this.currentApi = data;
@@ -160,7 +174,6 @@ export default class extends Vue {
     for (let i of data.mock) {
       this.currentTabsData[i.methods] = i.schema;
     }
-    console.log("currentTabsData", this.currentTabsData);
   }
   public calcMethodTagType(methods: string) {
     switch (methods) {

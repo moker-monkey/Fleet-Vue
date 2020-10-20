@@ -11,3 +11,8 @@ declare module '*/modules/*' {
 declare module 'element-ui/lib/locale/lang/*' {
     export const elementLocale: any
 }
+
+declare module 'is-json' {
+    import isJSON from 'is-json'
+    export default isJSON
+}
