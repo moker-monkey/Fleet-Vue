@@ -16,6 +16,7 @@ import {
 import Global from './layout/Global.vue';
 import AppMain from './layout/AppMain.vue';
 import 'font-awesome/css/font-awesome.css';
+import router from "@/router/index";
 
 @Component({
   name: 'app',

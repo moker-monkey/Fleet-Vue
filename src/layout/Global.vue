@@ -19,7 +19,7 @@ import Loading from "./components/loading/index.vue";
 import { PermissionModule } from "@/store/modules/permission";
 import { UserModule } from "@/store/modules/user";
 import settings from "@/setting";
-import router from "@/router/index";
+
 /*
 layout 的3种布局方式：
 1. PC端布局，有(header(fix,no-fix))、(slider(show))、(tagsView(hidden,show)、views(pc,Horizontal，vertical))

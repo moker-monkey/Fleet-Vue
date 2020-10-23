@@ -13,7 +13,7 @@ export default class extends Vue {
     public api!: api;
     @Prop({ default: () => { } })
     public params: any;
-    public inner_params: any = {};
+    public inner_params: any = {};  // 内部参数使用inner_params
     @Prop({ default: null })
     public _id?: number;
     @Prop({ default: 'data' })

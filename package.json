@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/codemirror": "0.0.98",
+    "@types/echarts": "^4.8.3",
     "@types/js-cookie": "^2.2.6",
     "@types/mockjs": "^1.0.3",
     "@types/nprogress": "^0.2.0",
@@ -19,6 +20,7 @@
     "ant-design-vue": "^1.6.5",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
     "font-awesome": "^4.7.0",
     "is-json": "^2.0.1",
