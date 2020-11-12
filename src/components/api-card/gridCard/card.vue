@@ -10,7 +10,7 @@
     }"
     :style="`flex-grow:${$attrs.grow || 1};flex-shrink:${
       $attrs.strink || 1
-    };height:${$attrs.height};width:${$attrs.width}`"
+    };height:${$attrs.height};width:${$attrs.width};`"
   >
     <slot class="content"></slot>
   </div>
@@ -31,12 +31,12 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
+} from 'vue-property-decorator';
 
 @Component
 export default class extends Vue {
-  @Prop({ default: "normal" })
-  public size: string;
+  @Prop({ default: 'normal' })
+  public size?: string;
 }
 </script>
 <style lang="scss" scoped>
