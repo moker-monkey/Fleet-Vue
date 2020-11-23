@@ -111,6 +111,7 @@ export default class extends Vue {
   transition: all 0.5s;
 }
 
+
 .breadcrumb-enter,
 .breadcrumb-leave-active {
   opacity: 0;

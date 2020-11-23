@@ -9,7 +9,7 @@
       >
         <el-menu-item :index="resolvePath(theOnlyOneChild.path)">
           <api-icon
-            :type="theOnlyOneChild.meta.icon_class ? 'icon' : 'svg'"
+            :type="theOnlyOneChild.meta.icon_type ? 'icon' : 'svg'"
             :name="
               theOnlyOneChild.meta.icon_class || theOnlyOneChild.meta.icon_svg
             "
@@ -24,7 +24,7 @@
       <el-submenu :index="resolvePath(item.path)" popper-append-to-body>
         <template slot="title">
           <api-icon
-            :type="item.icon_class ? 'icon' : 'svg'"
+            :type="item.icon_type ? 'icon' : 'svg'"
             :name="item.meta.icon_class || item.meta.icon_svg"
           ></api-icon>
           <span slot="title" style="margin-left: 4px">{{

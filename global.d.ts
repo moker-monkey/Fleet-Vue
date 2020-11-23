@@ -28,3 +28,8 @@ declare module '*.scss' {
     const scss: any;
     export default scss;
 }
+
+declare module 'animate.css' {
+    const animate: any;
+    export default animate
+}

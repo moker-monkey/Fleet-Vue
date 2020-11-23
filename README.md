@@ -1,6 +1,7 @@
 # perfect-vue
 
-iconfont的核心条件就是让svg标签脱离文档流后，symbol就能够在任意为只引用了
+svg iconfont的核心条件就是让svg标签脱离文档流后，symbol就能够在任意位置引用
+为了不需要修改多余的iconfont样式，iconfont建议统一使用[fontAwesome](https://fontawesome.dashgame.com/)
 
 ## 项目目录及说明
 | src

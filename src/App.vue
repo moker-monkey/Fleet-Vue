@@ -12,14 +12,15 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import Global from './layout/Global.vue';
-import AppMain from './layout/AppMain.vue';
-import 'font-awesome/css/font-awesome.css';
+} from "vue-property-decorator";
+import Global from "./layout/Global.vue";
+import AppMain from "./layout/AppMain.vue";
+import "font-awesome/css/font-awesome.css";
 import router from "@/router/index";
+import "@/directives";
 
 @Component({
-  name: 'app',
+  name: "app",
   components: {
     AppMain,
   },

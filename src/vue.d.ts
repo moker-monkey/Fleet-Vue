@@ -49,3 +49,9 @@ declare module '@/router/*' {
     import router from '@/router'
     export default router
 }
+
+declare module 'animate.css' {
+    const animate: any;
+    export default animate
+}
+

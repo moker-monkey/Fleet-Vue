@@ -7,11 +7,11 @@
         @change="collapase"
         :name="name"
       />
-      <Crumbs />
+      <Crumbs v-if="notNeedTools.indexOf('crumbs') == -1" />
     </div>
     <div class="right">
       <Tools />
-      <Avatar class="avatar"/>
+      <Avatar class="avatar" />
     </div>
   </div>
 </template>
@@ -30,16 +30,23 @@ import Toggle from "../components/toggleIcon/index.vue";
 import Crumbs from "./components/breadcrumbs/index.vue";
 import Tools from "./components/tool/header.vue";
 import Avatar from "./components/avatar/index.vue";
+
 // 实现控制侧边栏，面包屑，全局搜索，通知/更新、刷新、可下拉头像
 @Component({
   components: {
     Toggle,
     Crumbs,
     Tools,
-    Avatar
+    Avatar,
   },
 })
 export default class Header extends Vue {
+  @Prop({
+    default: () => {
+      return [];
+    },
+  })
+  public notNeedTools?: any[];
   get isCollapase() {
     return LayoutModule.isCollapase;
   }
@@ -62,14 +69,14 @@ export default class Header extends Vue {
   align-items: center;
   background: $header-color;
   padding: $header-padding;
-  .left{
+  .left {
     display: flex;
     align-items: center;
   }
-  .right{
+  .right {
     display: flex;
     align-items: center;
-    .avatar{
+    .avatar {
       margin-left: 20px;
     }
   }
