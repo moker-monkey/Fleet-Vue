@@ -1,4 +1,4 @@
-// 用于编写示例的路由
+// 删除也不影响业务功能的路由写在此处
 
 import Api from '@/example/api-generate/index.vue'
 

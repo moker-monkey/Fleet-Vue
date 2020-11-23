@@ -1,9 +1,13 @@
 export default {
   route: {
+    'overview': '整体概述',
     'about': '关于',
     'me': '关于我',
+    'realtime': '实时统计',
+    'rankingList': '排行榜',
     'compony': '关于公司',
     'dashboard': '首页',
+    'basicData': '基础数据',
     'documentation': '文档',
     'guide': '引导页',
     'permission': '权限测试页',

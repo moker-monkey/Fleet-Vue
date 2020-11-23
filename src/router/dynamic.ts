@@ -3,34 +3,68 @@ import Global from '../layout/Global.vue'
 
 const routes: RouteConfig[] = [
     {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
+        path: '/overview',
         component: Global,
-        redirect: 'me',
-        meta: {
-            title: 'about',
-            icon: 'none'
-        },
+        redirect: 'overview',
+        meta: { showBreadcrumb: true, title: 'overview', icon: 'fa fa-road', isHome: true, },
         children: [
             {
-                path: 'me',
-                name: 'me',
+                path: 'overview',
+                name: 'overview',
+                component: () => import('@/views/Dashboard.vue'),
                 meta: {
-                    title: 'me'
-                },
-                component: () => import('@/example/about/me.vue')
+                    title: 'overview',
+                    affix: true
+                }
+            }, {
+                path: 'realtime',
+                name: 'realtime',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'realtime',
+                    affix: true
+                }
+            }, {
+                path: 'rankingList',
+                name: 'rankingList',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'rankingList',
+                    affix: true
+                }
             },
+        ]
+    }, {
+        path: '/basicData',
+        component: Global,
+        redirect: 'basicData',
+        meta: { showBreadcrumb: true, title: 'basicData', icon: 'fa fa-database', isHome: true, },
+        children: [
             {
-                path: 'compony',
-                name: 'compony',
+                path: 'registrationData',
+                name: 'registrationData',
+                component: () => import('@/views/Dashboard.vue'),
                 meta: {
-                    title: 'compony'
-                },
-                component: () => import('@/example/about/compony.vue')
-            }
+                    title: 'registrationData',
+                    affix: true
+                }
+            }, {
+                path: 'realtime',
+                name: 'realtime',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'realtime',
+                    affix: true
+                }
+            }, {
+                path: 'rankingList',
+                name: 'rankingList',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'rankingList',
+                    affix: true
+                }
+            },
         ]
     },
     {

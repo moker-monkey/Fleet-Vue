@@ -1,9 +1,9 @@
 <template>
   <div class="icon-wrap">
-    <template v-if="type==='font'">
+    <template v-if="type === 'font'">
       <i :class="`${name}`"></i>
     </template>
-    <template v-if="type==='svg'">
+    <template v-if="type === 'svg'">
       <svg class="icon" aria-hidden="true">
         <use :xlink:href="`#${name}`" />
       </svg>
@@ -19,13 +19,13 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
+} from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
   @Prop()
   public name!: string;
-  @Prop({ default: 'svg' })
+  @Prop({ default: "svg" })
   public type?: string;
 }
 </script>

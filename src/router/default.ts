@@ -5,22 +5,23 @@ import About from '../views/About.vue';
 import Login from '../views/login/index.vue'
 import ApiGenerate from '../example/api-generate/index.vue'
 
+// 默认的页面是固定的不会从api中拉取路由控制
+
 import { RouteConfig } from 'vue-router';
 const routes: RouteConfig[] = [
     {
-        path: '/overview',
+        path: '/dashboard',
         component: Global,
         redirect: 'dashboard',
-        meta: { showBreadcrumb: false, title: 'dashboard', icon: 'dashboard', isHome: true, },
+        meta: { showBreadcrumb: true, title: 'dashboard', isHome: true, },
         children: [
             {
                 path: 'dashboard',
                 name: 'dashboard',
-                component: () => import('@/views/Home.vue'),
+                component: () => import('@/views/Dashboard.vue'),
                 meta: {
                     title: 'dashboard',
-                    icon: 'dashboard',
-
+                    icon: 'fa fa-tachometer',
                     affix: true
                 }
             }
