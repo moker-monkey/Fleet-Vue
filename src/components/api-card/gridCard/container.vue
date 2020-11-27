@@ -23,25 +23,30 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
+} from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
-  @Prop({ default: 'row' })
+  @Prop({ default: "row" })
   public direction?: string; // row,col
-  @Prop({ default: 'center' })
+  @Prop({ default: "space-around" })
   public justify?: string; // top,bottom,center,between,around
-  @Prop({ default: 'center' })
+  @Prop({ default: "center" })
   public align?: string; // top,bottom,center,full,text
-  @Prop({ default: '0 10px' })
+  @Prop({ default: "0" })
   public margin?: string;
 
-  @Watch('margin')
+  @Watch("margin")
   public W_margin(value: any, old: any) {
     const father: any = this.$refs.content;
     const children: HTMLElement[] = father.children;
+    children.forEach((value: HTMLElement, index: number) => {
+      let length = children.length - 1
+      if (index === 0) {
+        value.style.margin = this.margin as string;
+      }else if (index === length){}
+    });
     for (const i of children) {
-      i.style.margin = this.margin as string;
     }
   }
 
@@ -56,48 +61,48 @@ export default class extends Vue {
   public CalcClass() {
     const cls = [];
     switch (this.direction) {
-      case 'row':
-        cls.push('flex-direction:row');
+      case "row":
+        cls.push("flex-direction:row");
         break;
-      case 'col':
-        cls.push('flex-direction:column');
+      case "col":
+        cls.push("flex-direction:column");
         break;
     }
     switch (this.justify) {
-      case 'top':
-        cls.push('justify-content:flex-start');
+      case "top":
+        cls.push("justify-content:flex-start");
         break;
-      case 'center':
-        cls.push('justify-content:center');
+      case "center":
+        cls.push("justify-content:center");
         break;
-      case 'bottom':
-        cls.push('justify-content:flex-bottom');
+      case "bottom":
+        cls.push("justify-content:flex-bottom");
         break;
-      case 'space-between':
-        cls.push('justify-content:space-between');
+      case "space-between":
+        cls.push("justify-content:space-between");
         break;
-      case 'space-around':
-        cls.push('justify-content:space-around');
+      case "space-around":
+        cls.push("justify-content:space-around");
         break;
     }
     switch (this.align) {
-      case 'top':
-        cls.push('align-items:flex-start');
+      case "top":
+        cls.push("align-items:flex-start");
         break;
-      case 'center':
-        cls.push('align-items:center');
+      case "center":
+        cls.push("align-items:center");
         break;
-      case 'bottom':
-        cls.push('align-items:flex-end');
+      case "bottom":
+        cls.push("align-items:flex-end");
         break;
-      case 'baseline':
-        cls.push('align-items:baseline');
+      case "baseline":
+        cls.push("align-items:baseline");
         break;
-      case 'full':
-        cls.push('align-items:stretch');
+      case "full":
+        cls.push("align-items:stretch");
         break;
     }
-    return cls.join(';');
+    return cls.join(";");
   }
 }
 </script>
@@ -105,6 +110,9 @@ export default class extends Vue {
 .grid-container {
   .content {
     display: flex;
+    .card {
+      margin-right: 20px;
+    }
   }
 }
 .row,

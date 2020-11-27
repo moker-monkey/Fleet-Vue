@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
 
-import { dynamicRoutes, staticRouter } from '@/router'
+import { dynamicRoutes, allStaticRouter } from '@/router'
 import store from '@/store'
 import { RouteConfig } from 'vue-router'
 
@@ -85,7 +85,7 @@ class Permission extends VuexModule implements IPermissionState {
   }
   @Mutation
   private SET_ROUTES(routes: RouteConfig[]) {
-    this.routes = staticRouter.concat(routes)
+    this.routes = allStaticRouter.concat(routes)
     this.dynamicRoutes = routes
   }
 }

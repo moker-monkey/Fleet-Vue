@@ -1,19 +1,12 @@
 <template>
-  <div
+  <el-col
     :class="{
       card: true,
-      'card-mini': size === 'mini',
-      'card-small': size === 'small',
-      'card-normal': size === 'normal',
-      'card-middle': size === 'middle',
-      'card-large': size === 'large',
     }"
-    :style="`flex-grow:${$attrs.grow || 1};flex-shrink:${
-      $attrs.strink || 1
-    };height:${$attrs.height};width:${$attrs.width};`"
+    :style="`flex-grow:${$attrs.grow || 1};flex-shrink:${$attrs.strink || 1};`"
   >
     <slot class="content"></slot>
-  </div>
+  </el-col>
 </template>
 <script lang="ts">
 /**
@@ -31,67 +24,24 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
+} from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
-  @Prop({ default: 'normal' })
-  public size?: string;
+  @Prop({ default: 1 })
+  public size!: number;
+  get G_size() {
+    return 24 / this.size;
+  }
 }
 </script>
 <style lang="scss" scoped>
 @import "@/assets/common/card";
 .card {
-  display: inline-block;
-  background: red;
   box-shadow: 0 2px 11px 0 rgba(190, 202, 218, 0.17);
   border: 2px #fff solid;
   border-radius: 10px;
   padding: 14px 20px;
   font-size: 13px;
-}
-
-.row {
-  & > .content > .card-mini {
-    width: 19.5%;
-  }
-
-  & > .content > .card-small {
-    width: 24.5%;
-  }
-
-  & > .content > .card-normal {
-    width: 33%;
-  }
-
-  & > .content > .card-middle {
-    width: 49.5%;
-  }
-
-  & > .content > .card-large {
-    width: 99.5%;
-  }
-}
-
-.col {
-  & > .content > .card-mini {
-    height: 19.5%;
-  }
-
-  & > .content > .card-small {
-    height: 24.5%;
-  }
-
-  & > .content > .card-normal {
-    height: 33%;
-  }
-
-  & > .content > .card-middle {
-    height: 49.5%;
-  }
-
-  & > .content > .card-large {
-    height: 99.5%;
-  }
 }
 </style>

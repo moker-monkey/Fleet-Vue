@@ -14,7 +14,7 @@ const routes: RouteConfig[] = [
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
                     title: 'overview',
-                    affix: true
+
                 }
             }, {
                 path: 'realtime',
@@ -22,7 +22,7 @@ const routes: RouteConfig[] = [
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
                     title: 'realtime',
-                    affix: true
+
                 }
             }, {
                 path: 'rankingList',
@@ -30,7 +30,7 @@ const routes: RouteConfig[] = [
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
                     title: 'rankingList',
-                    affix: true
+
                 }
             },
         ]
@@ -41,28 +41,115 @@ const routes: RouteConfig[] = [
         meta: { showBreadcrumb: true, title: 'basicData', icon: 'fa fa-database', isHome: true, },
         children: [
             {
-                path: 'registrationData',
-                name: 'registrationData',
+                path: 'registrationAnalysis',
+                name: 'registrationAnalysis',
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
-                    title: 'registrationData',
-                    affix: true
+                    title: 'registrationAnalysis',
                 }
             }, {
-                path: 'realtime',
-                name: 'realtime',
+                path: 'rechargeActive',
+                name: 'rechargeActive',
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
-                    title: 'realtime',
-                    affix: true
+                    title: 'rechargeActive',
+
                 }
             }, {
-                path: 'rankingList',
-                name: 'rankingList',
+                path: 'rechargeAnalysis',
+                name: 'rechargeAnalysis',
                 component: () => import('@/views/Dashboard.vue'),
                 meta: {
-                    title: 'rankingList',
-                    affix: true
+                    title: 'rechargeAnalysis',
+
+                }
+            }, {
+                path: 'consumeAnalysis',
+                name: 'consumeAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'consumeAnalysis',
+
+                }
+            }, {
+                path: 'balanceAnalysis',
+                name: 'balanceAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'balanceAnalysis',
+
+                }
+            }, {
+                path: 'channelAnalysis',
+                name: 'channelAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'channelAnalysis',
+
+                }
+            }, {
+                path: 'agencyAnalysis',
+                name: 'agencyAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'agencyAnalysis',
+
+                }
+            }, {
+                path: 'terminalAnalysis',
+                name: 'terminalAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'terminalAnalysis',
+
+                }
+            },
+        ]
+    }, {
+        path: '/financialAnalysis',
+        component: Global,
+        redirect: 'financialAnalysis',
+        meta: { showBreadcrumb: true, title: 'financialAnalysis', icon: 'fa fa-road', isHome: true, },
+        children: [
+            {
+                path: 'rechargeAnalysis',
+                name: 'rechargeAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'rechargeAnalysis',
+
+                }
+            }, {
+                path: 'withdrawalAnalysis',
+                name: 'withdrawalAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'withdrawalAnalysis',
+
+                }
+            }, {
+                path: 'antiWaterAnalysis',
+                name: 'antiWaterAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'antiWaterAnalysis',
+
+                }
+            }, {
+                path: 'breakEvenAnalysis',
+                name: 'breakEvenAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'breakEvenAnalysis',
+
+                }
+            }, {
+                path: 'thirdAnalysis',
+                name: 'thirdAnalysis',
+                component: () => import('@/views/Dashboard.vue'),
+                meta: {
+                    title: 'thirdAnalysis',
+
                 }
             },
         ]

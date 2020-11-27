@@ -3,7 +3,7 @@ import Home from '../views/Home.vue';
 import Global from '../layout/Global.vue'
 import About from '../views/About.vue';
 import Login from '../views/login/index.vue'
-import ApiGenerate from '../example/api-generate/index.vue'
+import ApiGenerate from '../example/apiManager/index.vue'
 
 // 默认的页面是固定的不会从api中拉取路由控制
 

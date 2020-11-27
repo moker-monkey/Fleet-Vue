@@ -89,7 +89,7 @@ export default class Api {
     }
     public mock_interceptors(config: AxiosRequestConfig) {
         for (const i of Api.mockDataList) {
-            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+${i.affix}`) : config.url === i.url) && i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
+            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
                 const index = i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase())
                 Mock.mock(new RegExp(i.route + '\\.*'), i.mock[index].schema)
                 console.warn(`[Mock request]method:${i.mock[index].methods}&&url:${i.route}`)

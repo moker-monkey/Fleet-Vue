@@ -59,14 +59,14 @@ class TagsView extends VuexModule implements ITagsViewState {
   public updateVisitedView(view: ITagView) {
     this.UPDATE_VISITED_VIEW(view)
   }
-  @Action
-  public setActivePath(path: string) {
-    this.SET_ACTIVE_PATH(path)
-  }
-  @Mutation
-  private SET_ACTIVE_PATH(path: string) {
-    this.currentActive = path;
-  }
+  // @Action
+  // public setActivePath(path: string) {
+  //   this.SET_ACTIVE_PATH(path)
+  // }
+  // @Mutation
+  // private SET_ACTIVE_PATH(path: string) {
+  //   this.currentActive = path;
+  // }
   @Mutation
   private ADD_VISITED_VIEW(view: ITagView) {
     if (this.visitedViews.some((v) => v.path === view.path)) { return }

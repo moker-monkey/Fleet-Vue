@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    :default-active="active"
+    :default-active="G_active"
     :default-openeds="open"
     class="menu-slide"
     :collapse="isCollapse"
@@ -34,6 +34,9 @@ import api from "@/api";
 })
 export default class Menu extends Vue {
   @Prop() public active!: any;
+  get G_active() {
+    return this.active;
+  }
   @Prop() public open: any;
   @Prop() public isCollapse!: boolean;
   @Prop() public changeActive: any;

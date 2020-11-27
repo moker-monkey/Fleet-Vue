@@ -14,16 +14,16 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { State, Mutation } from 'vuex-class';
-import Menu from './components/el-slide-menu/menu.vue';
-import sliderLogo from './components/el-slide-menu/slideLogo.vue';
-import setting from '../setting';
-import { TagsViewModule } from '@/store/modules/tags-view';
-import { LayoutModule } from '../store/modules/layout';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { State, Mutation } from "vuex-class";
+import Menu from "./components/el-slide-menu/menu.vue";
+import sliderLogo from "./components/el-slide-menu/slideLogo.vue";
+import setting from "../setting";
+import { TagsViewModule } from "@/store/modules/tags-view";
+import { LayoutModule } from "../store/modules/layout";
 
 @Component({
-  name: 'Slider',
+  name: "Slider",
   components: {
     Menu,
     sliderLogo,
@@ -33,11 +33,11 @@ export default class Slider extends Vue {
   get isCollapse() {
     return LayoutModule.isCollapase;
   }
-  public faceSrc: string = '';
-  public username: string = '';
+  public faceSrc: string = "";
+  public username: string = "";
   public showLogo: boolean = true;
   get currentActive() {
-    return TagsViewModule.currentActive;
+    return this.$route.meta.active || this.$route.path;
   }
   // @Mutation("changeActive") public changeActive: any;
   public menuSelect(this: any, index: string, indexPath: string[]) {
