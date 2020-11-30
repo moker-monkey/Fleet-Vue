@@ -29,15 +29,15 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import Container from "@/components/api-card/gridCard/container.vue";
-import Card from "@/components/api-card/gridCard/card.vue";
+import HelloWorld from '@/components/HelloWorld.vue';
+import Container from '@/components/api-card/gridCard/container.vue';
+import Card from '@/components/api-card/gridCard/card.vue';
 
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
+import { Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 
 @Component({
-  name: "Home",
+  name: 'Home',
   components: {
     HelloWorld,
     Container,
@@ -45,10 +45,13 @@ import Vue from "vue";
   },
 })
 export default class Home extends Vue {
-  public state: string = "running";
+  public state: string = 'running';
   public star() {
-    this.state = "running";
-    console.log("click");
+    this.state = 'running';
+    console.log('click');
+  }
+  public mounted() {
+    console.log('%O', Date);
   }
 }
 </script>

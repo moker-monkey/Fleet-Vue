@@ -28,6 +28,12 @@
     "no-empty": false,
     "max-line-length": false,
     "no-console": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "vue/no-parsing-error": [
+      2,
+      {
+        "x-invalid-end-tag": false
+      }
+    ]
   }
 }

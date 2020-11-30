@@ -43,7 +43,7 @@ const routes: RouteConfig[] = [
             {
                 path: 'registrationAnalysis',
                 name: 'registrationAnalysis',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/basicData/registrationAnalysis.vue'),
                 meta: {
                     title: 'registrationAnalysis',
                 }

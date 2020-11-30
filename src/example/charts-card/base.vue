@@ -2,7 +2,7 @@
   <api-card class="base-card">
     <div class="header">
       <div class="title">
-        <span class="title">实时|累计新增用户</span>
+        <span class="title">{{ data.title }}</span>
         <span>
           <slot name="tool" v-if="options.tool">
             <el-button type="text" size="mini">趋势</el-button>
@@ -16,34 +16,11 @@
       <div class="content">
         <slot name="count">
           <count-to class="number" :startVal="0" :endVal="data.count"></count-to
-          >人
+          >{{ data.unit }}
         </slot>
       </div>
-      <div :class="{compare:true, inline:true }">
-        <slot name="subCount">
-          <span class="monthOnMonth">
-            <span> 环比 </span>
-            <span class="down-arrow">
-              <count-to
-                class="number"
-                :startVal="0"
-                :endVal="30"
-                suffix="%"
-              ></count-to>
-            </span>
-          </span>
-          <span class="yearOnYear">
-            <span> 同比 </span>
-            <span class="up-row">
-              <count-to
-                class="number"
-                :startVal="0"
-                :endVal="40"
-                suffix="%"
-              ></count-to>
-            </span>
-          </span>
-        </slot>
+      <div :class="{ compare: true, inline: true }">
+        <slot name="subCount" :data="data"> </slot>
       </div>
     </div>
     <div class="content"></div>
@@ -58,21 +35,16 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import countTo from "vue-count-to";
+} from 'vue-property-decorator';
+
 
 interface data {
-  title: "";
+  title: '';
 }
 interface options {
   tool: boolean;
-  
 }
-@Component({
-  components: {
-    countTo,
-  },
-})
+@Component
 export default class extends Vue {
   @Prop({
     default: () => {

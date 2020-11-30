@@ -16,4 +16,10 @@ export function format(this: any, fmt: any): any {
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
         }
     }
+    return fmt
 }
+
+export const dayToMs = (days: number) => {
+    return 1000 * 60 * 60 * 24 * days
+}
+

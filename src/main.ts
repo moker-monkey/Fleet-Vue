@@ -7,12 +7,12 @@ import animate from 'animate.css'
 import '@/plugins/element'
 import '@/plugins/apiVue'
 import '@/router/routerListener'
+import '@/utils'
 
 
 import '@/styles/element-variables.scss'
 import '@/styles/index.scss'
 
-console.log('animate', animate)
 Vue.config.productionTip = false;
 Vue.use(animate)
 
