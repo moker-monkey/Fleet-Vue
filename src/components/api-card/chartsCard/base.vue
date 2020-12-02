@@ -1,7 +1,8 @@
+// 卡片中的基础部分,卡片中必然有该类卡片
 <template>
   <api-card class="base-card">
-    <el-row type="flex">
-      <el-col class="header" span="6">
+    <el-row>
+      <el-col class="header">
         <div class="title">
           <span class="title">{{ data.title }}</span>
           <span>
@@ -28,9 +29,9 @@
           <slot name="subCount" :data="data"> </slot>
         </div>
       </el-col>
-      <el-col span="16" class="charts">
+      <!-- <el-col :span="options.contentSpan">
         <slot name="content"></slot>
-      </el-col>
+      </el-col> -->
     </el-row>
   </api-card>
 </template>
@@ -44,14 +45,21 @@ import {
   Watch,
   Component,
 } from 'vue-property-decorator';
+import countTo from 'vue-count-to';
 
 interface data {
   title: '';
 }
 interface options {
   tool: boolean;
+  contentSpan: number;
+  headerSpan: number;
 }
-@Component
+@Component({
+  components: {
+    countTo,
+  },
+})
 export default class extends Vue {
   @Prop({
     default: () => {
@@ -63,6 +71,8 @@ export default class extends Vue {
     default: () => {
       return {
         tool: true,
+        contentSpan: 16,
+        headerSpan: 6,
       };
     },
   })
