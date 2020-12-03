@@ -2,7 +2,7 @@
 <template>
   <api-card class="base-card">
     <el-row>
-      <el-col class="header">
+      <el-col class="header" :span="4">
         <div class="title">
           <span class="title">{{ data.title }}</span>
           <span>
@@ -31,10 +31,11 @@
           <slot name="subCount" :data="data"> </slot>
         </div>
       </el-col>
-      <el-col class="content">
+      <el-col :span="20">
         <slot name="content"></slot>
       </el-col>
     </el-row>
+
     <el-dialog :visible.sync="showDialog">
       <slot name="dialog"></slot>
     </el-dialog>
@@ -104,16 +105,6 @@ export default class extends Vue {
     }
   }
   .compare {
-  }
-}
-// 有多套css，以方便在最小的逻辑代码中有最大的样式变化
-// 并且各层有各层的样式体系，但是可以用同一classname
-.big-card {
-  .header {
-    width: 200px;
-  }
-  .content .number {
-    margin-left: 20px;
   }
 }
 </style>
