@@ -43,5 +43,10 @@ export default class extends Vue {
   border-radius: 10px;
   padding: 14px 20px;
   font-size: 13px;
+  transition: all 0.5s;
+  &:hover {
+    box-shadow: 2px 2px 6px#aaa;
+    transform: translateY(-4px);
+  }
 }
 </style>

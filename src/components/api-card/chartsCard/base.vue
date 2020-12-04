@@ -1,37 +1,19 @@
 // 卡片中的基础部分,卡片中必然有该类卡片
 <template>
   <api-card class="base-card">
-    <el-row>
-      <el-col class="header">
-        <div class="title">
-          <span class="title">{{ data.title }}</span>
-          <span>
-            <slot name="tool" v-if="options.tool">
-              <el-button type="text" size="mini" @click="showDialog = true"
-                >趋势</el-button
-              >
-            </slot>
-          </span>
+    <el-row class="wrap">
+      <el-col
+        class="header"
+        :span="options.size === 'big' ? 4 : options.size === 'middle' ? 24 : 24"
+      >
+        <div class="count">
+          <slot name="count" :data="data"></slot>
         </div>
-        <div class="time">
-          {{ data.date }} <span class="subTime">| {{ data.subTime }}</span>
-        </div>
-        <div class="subtitle">{{ data.subTitle }}</div>
-        <div class="content">
-          <slot name="count">
-            <count-to
-              class="number"
-              :startVal="0"
-              :endVal="data.count"
-            ></count-to
-            >{{ data.unit }}
-          </slot>
-        </div>
-        <div :class="{ compare: true, inline: true }">
+        <div :class="{ inline: options.size === 'middle' }">
           <slot name="subCount" :data="data"> </slot>
         </div>
       </el-col>
-      <el-col class="content">
+      <el-col class="content" :span="options.size === 'big' ? 20 : 24">
         <slot name="content"></slot>
       </el-col>
     </el-row>
@@ -49,11 +31,11 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import countTo from 'vue-count-to';
+} from "vue-property-decorator";
+import countTo from "vue-count-to";
 
 interface data {
-  title: '';
+  title: "";
 }
 interface options {
   tool: boolean;
@@ -87,6 +69,9 @@ export default class extends Vue {
 </script>
 <style lang="scss" scoped>
 .base-card {
+  .wrap {
+    white-space: nowrap;
+  }
   background: #fff;
   .title {
     display: flex;
@@ -110,7 +95,7 @@ export default class extends Vue {
 // 并且各层有各层的样式体系，但是可以用同一classname
 .big-card {
   .header {
-    width: 200px;
+    max-width: 200px;
   }
   .content .number {
     margin-left: 20px;

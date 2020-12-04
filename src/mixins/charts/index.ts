@@ -1,54 +1,80 @@
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
-import Resize from '../resize/index'
-import echarts, { EChartOption } from 'echarts'
-import { mixins } from 'vue-class-component';
-const WIDTH = 992 // refer to Bootstrap's responsive design
+import { Vue, Prop, Watch } from "vue-property-decorator"
+import Component, { mixins } from 'vue-class-component'
+import api from "@/api/index.ts"
+import echarts from 'echarts'
+import Resize from "../resize"
+import { Loading } from 'element-ui';
 
-// 该mixins主要作用是让Charts只需要配置options就可以了
-@Component({
-    name: 'ChartsMixin'
-})
-export default class extends mixins(Vue, Resize) {
-    @Prop({ default: 'chart' }) public className!: string
-    @Prop({ default: 'chart' }) public id!: string
-    @Prop({ default: '200px' }) public width!: string
-    @Prop({ default: '200px' }) public height!: string
-    @Prop({ default: {} }) public data!: any
-    @Prop({ default: false }) public loading?: boolean;
-    @Prop({ default: '' }) public title?: string;
-
-    public chart: any = null;
-    public options!: any;
-    public in_loading!: any;
-
-    public setOptions(this: any, data: any, title: any) { }
-    public mounted() {
-        // this.in_loading = this.$loading({ target: this.$el.$parent.$el })
-        this.$nextTick(() => {
-            this.setOptions(this.data, this.title)
-            this.initChart(this.options)
-        })
-    }
-    public beforeDestroy() {
-        if (!this.chart) {
-            return
+@Component
+export default class EchartsMixin extends mixins(Vue, Resize) {
+    @Prop()
+    public title?: string;
+    @Prop({ default: api.games })
+    public api?: Api
+    @Prop({
+        default: false
+    })
+    public refresh?: boolean;
+    @Prop({
+        default() {
+            return {}
         }
-        this.chart.dispose()
-        this.chart = null
+    })
+    public params?: any
+    public fakeOption: any = {}
+    public option: any = {}
+    public loading: any = null;
+    @Watch("refresh")
+    public watchRefresh(this: any, value: any) {
+        this.getOption(this.params)
     }
-    @Watch('data', { deep: true })
-    private changeData(this: any, value: any) {
-        this.$nextTick(() => {
-            this.options = this.setOptions(value, this.title)
-            this.initChart(this.options)
-        })
+    // @Watch("params", { deep: true })
+    // public watchParams(this: any, value: any) {
+    //     this.getOption(this.params)
+    // }
+    public getOption(this: any, param: any = {}) {
+        const params = Object.assign(param, this.params);
+        if (this.api) {
+            // this.loading = Loading.service({ target: this.$refs.charts });
+            this.api.GET(params).then((res: any) => {
+                // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+                //     this.loading.close();
+                // });
+                this.setCharts(this.resetOption(res.data));
+
+            }).catch((err: any) => {
+                console.log(err)
+                if (this.fakeOption) {
+                    this.setCharts(this.fakeOption)
+                    // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+                    //     this.loading.close();
+                    // });
+                }
+            })
+        } else {
+            this.setCharts(this.options)
+        }
     }
-    @Watch('loading')
-    private changeLoading(this: any, value: boolean) {
-        if (value) { this.in_loading = this.$loading({ target: this.$parent.$el, customClass: 'charts-loading' }) } else { this.in_loading.close() }
+    public initChart(this: any) {
+        this.chart = echarts.init(this.$refs.charts)
     }
-    private initChart(options: EChartOption<EChartOption.SeriesLine>) {
-        this.chart = echarts.init(document.getElementById(this.id) as HTMLDivElement)
+    public resetOption(this: any, data: any) {
+        // 在获取数据后更新Option,默认返回直接的请求
+        // 继承该模块只需要重写setOption即可完成更新
+        return data
+    }
+    public setCharts(this: any, option: any = {}) {
+        let options = Object.assign(this.option, option)
+        if (this.title) {
+            options["title"] = {}
+            options.title["text"] = this.title
+        }
         this.chart.setOption(options)
+
+    }
+    public mounted(this: any) {
+
+        this.initChart();
+        this.getOption();
     }
 }

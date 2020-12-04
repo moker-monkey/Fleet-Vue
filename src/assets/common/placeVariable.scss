@@ -7,18 +7,18 @@
 //     color: $normal-font-color;
 // }
 
-// @mixin clearfix {
-//     display: inline-block;
+@mixin clearfix {
+    display: inline-block;
 
-//     &:after {
-//         content: '.';
-//         display: block;
-//         height: 0;
-//         visibility: hidden;
-//         clear: both;
-//     }
+    &:after {
+        content: '.';
+        display: block;
+        height: 0;
+        visibility: hidden;
+        clear: both;
+    }
 
-//     * html & {
-//         height: 1px;
-//     }
-// }
+    * html & {
+      height: 1px;
+  }
+}

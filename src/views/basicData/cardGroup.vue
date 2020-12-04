@@ -1,18 +1,15 @@
 <template>
   <fragment>
-    <el-row type="flex" :gutter="30" class="content-item">
-      <el-col :span="6">
+    <el-row type="flex"  :gutter="30" class="content-item">
+      <el-col :span="24">
         <card1
           :data="card_data.newuser"
           :options="{ tool: false, size: 'big' }"
         >
-        <template #content>
-          <div style="width:600px;">
-            23432
-          </div>
-        </template>
+          <template #content>
+            <lineCharts style="width:100%;height:200px;"></lineCharts>
+          </template>
           <template #dialog>
-            <div >1232123</div>
           </template>
         </card1>
       </el-col>
@@ -23,8 +20,8 @@
         <card1 :data="card_data.newuser"></card1>
       </el-col>
       <el-col :span="6">
-        <card1 :data="card_data.newuser"></card1>
-      </el-col> -->
+        <card1 :data="card_data.newuser"></card1> -->
+      </el-col>
     </el-row>
     <el-row type="flex" :gutter="30" class="content-item">
       <el-col :span="6">
@@ -61,23 +58,25 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import card1 from '../components/chartsCard/card-1.vue';
+} from "vue-property-decorator";
+import card1 from "../components/chartsCard/card-1.vue";
+import lineCharts from "@/example/charts/lineCharts.vue";
 
 @Component({
   components: {
     card1,
+    lineCharts,
   },
 })
 export default class extends Vue {
   public card_data = {
     newuser: {
-      title: '实时 | 累计新增用户',
-      date: new Date().Format('yyyy-MM-dd hh:mm:ss'),
-      subTime: '今日',
-      subTitle: '今日',
+      title: "实时 | 累计新增用户",
+      date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+      subTime: "今日",
+      subTitle: "今日",
       count: 2020,
-      unit: '人',
+      unit: "人",
       mtm: 30,
       yty: 40,
     },
@@ -86,6 +85,7 @@ export default class extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrap {
+
   .content-item ~ .content-item {
     margin-top: 20px;
   }
