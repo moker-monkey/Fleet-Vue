@@ -4,13 +4,15 @@
     <el-row class="wrap">
       <el-col
         class="header"
-        :span="options.size === 'big' ? 4 : options.size === 'middle' ? 24 : 24"
+        :span="options.size === 'big' ? 4 : 24"
       >
-        <div class="count">
-          <slot name="count" :data="data"></slot>
-        </div>
-        <div :class="{ inline: options.size === 'middle' }">
-          <slot name="subCount" :data="data"> </slot>
+        <div class="subCountent">
+          <div class="count">
+            <slot name="count" :data="data"></slot>
+          </div>
+          <div :class="{ inline: options.size === 'middle' }">
+            <slot name="subCount" :data="data"> </slot>
+          </div>
         </div>
       </el-col>
       <el-col class="content" :span="options.size === 'big' ? 20 : 24">
@@ -31,11 +33,11 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import countTo from "vue-count-to";
+} from 'vue-property-decorator';
+import countTo from 'vue-count-to';
 
 interface data {
-  title: "";
+  title: '';
 }
 interface options {
   tool: boolean;
@@ -70,7 +72,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .base-card {
   .wrap {
-    white-space: nowrap;
+    // white-space: nowrap;
   }
   background: #fff;
   .title {
@@ -99,6 +101,21 @@ export default class extends Vue {
   }
   .content .number {
     margin-left: 20px;
+  }
+}
+.mid-card {
+  .subCountent {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+  .inline {
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-end;
+    width: 100%;
+    padding-bottom:10px;
   }
 }
 </style>

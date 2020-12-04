@@ -38,12 +38,13 @@
       </div>
     </template>
     <template v-slot:subCount="scope">
-      <div>
+      <div class="compare-wrap">
         <div class="compare monthOnMonth">
           <span> 环比 </span>
           <span class="row up"></span>
           <span>
             <count-to
+              class="num"
               :startVal="0"
               :endVal="scope.data.mtm"
               suffix="%"
@@ -55,6 +56,7 @@
           <span class="row down"></span>
           <span>
             <count-to
+              class="num"
               :startVal="0"
               :endVal="scope.data.yty"
               suffix="%"
@@ -67,11 +69,11 @@
         v-if="options.size === 'big' || options.size === 'middle'"
       >
         <div>
-          <span>合计</span> <span class="count">{{ 2000 }}</span
+          <span>合计 </span> <span class="count">{{ 2000 }}</span
           ><span> 人</span>
         </div>
         <div>
-          <span>新增</span> <span class="count">{{ 800 }}</span
+          <span>新增 </span> <span class="count">{{ 800 }}</span
           ><span> 人</span>
         </div>
       </div>
@@ -94,9 +96,9 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import base from "@/components/api-card/chartsCard/base.vue";
-import countTo from "vue-count-to";
+} from 'vue-property-decorator';
+import base from '@/components/api-card/chartsCard/base.vue';
+import countTo from 'vue-count-to';
 
 @Component({
   components: {
@@ -124,12 +126,20 @@ export default class extends Vue {
 <style lang="scss" scoped>
 @import "@/assets/common/placeVariable.scss";
 .base-card {
+  .time {
+    white-space: nowrap;
+  }
   .compare {
     display: inline;
   }
   .content {
     .number {
       font-size: 30px;
+    }
+  }
+  .bottom {
+    .count {
+      font-size: 20px;
     }
   }
 }
@@ -139,8 +149,8 @@ export default class extends Vue {
     padding-top: 20px;
     margin-top: 20px;
     border-top: 1px solid #000;
+
     .count {
-      font-size: 20px;
       margin: 0 30px;
     }
   }
@@ -152,17 +162,21 @@ export default class extends Vue {
   }
 }
 .mid-card {
+  .compare-wrap {
+    align-self: flex-end;
+    margin-left: -20px;
+  }
   .compare {
     display: block;
   }
   .bottom {
-    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-right: 42px;
-    font-size: 20px;
     border-left: 1px solid #000;
     padding-left: 40px;
     top: 0;
-    @include clearfix;
   }
 }
 .row {

@@ -14,7 +14,7 @@
       </el-col>
     </el-row>
     <el-row type="flex" :gutter="30" class="content-item">
-      <el-col :span="24">
+      <el-col :span="12">
         <card1
           :data="card_data.newuser"
           :options="{ tool: false, size: 'middle', compare_inline: true }"
@@ -61,9 +61,9 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import card1 from "@/views/components/chartsCard/card-1.vue";
-import lineCharts from "@/example/charts/lineCharts.vue";
+} from 'vue-property-decorator';
+import card1 from '@/views/components/chartsCard/card-1.vue';
+import lineCharts from '@/example/charts/lineCharts.vue';
 
 @Component({
   components: {
@@ -74,12 +74,12 @@ import lineCharts from "@/example/charts/lineCharts.vue";
 export default class extends Vue {
   public card_data = {
     newuser: {
-      title: "实时 | 累计新增用户",
-      date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
-      subTime: "今日",
-      subTitle: "今日",
+      title: '实时 | 累计新增用户',
+      date: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+      subTime: '今日',
+      subTitle: '今日',
       count: 2020,
-      unit: "人",
+      unit: '人',
       mtm: 30,
       yty: 40,
     },
