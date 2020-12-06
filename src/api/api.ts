@@ -27,6 +27,7 @@ export let getNotify = new api(scope, 'notify')
 export let logout = new api(scope, 'logout')
 export let route = new api(scope, 'route') // 用于做路由权限
 export let notice = new api(scope, 'notice').setName('通知').setDescription('用于header工具栏的通知')
+export let registrationAnalysisCard = new api(scope, 'rac').setName('注册分析的卡片组')
 
 export { api }  // 这样导出会直接挂载到module上，如果是export api会挂载到module.default后，
 export { _Api as Api }

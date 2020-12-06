@@ -1,5 +1,6 @@
 import * as api from './api'
 import { Random } from 'mockjs'
+import '@/utils'
 
 api.user.setMock('GET', { good: 'mock' })
 api.login.setMock('GET', {
@@ -52,4 +53,104 @@ api.notice.setMock('GET', {
     }
 })
 
+api.registrationAnalysisCard.setMock('GET', {
+    results: {
+        newUser: {
+            title: "实时 | 累计新增用户",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 656,
+            unit: "人",
+            mtm: 56,
+            yty: 21,
+            mtm_unit:'up',
+            yty_unit:'up',
+        },
+        oldUser: {
+            title: "实时 | 累计老用户活跃",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 335,
+            unit: "人",
+            mtm: 96,
+            mtm_unit:'up',
+            yty: 83,
+            yty_unit:'up',
+        },
+        dayActiveUser: {
+            title: "实时 | 累计日活跃用户",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 922,
+            unit: "人",
+            mtm: 4,
+            yty: 40,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+        visitCount: {
+            title: "实时 | 累计访问次数",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 225,
+            unit: "人",
+            mtm: 74,
+            yty: 61,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+        recharge: {
+            title: "实时 | 充值金额",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 4615,
+            unit: "",
+            mtm: 17,
+            yty: 65,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+        extract: {
+            title: "实时 | 提现金额",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 2680,
+            unit: "",
+            mtm: 87,
+            yty: 52,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+        draw: {
+            title: "实时 | 已领取反水金额",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 6296,
+            unit: "",
+            mtm: 65,
+            yty: 36,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+        discount: {
+            title: "实时 | 优惠金额",
+            date: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+            subTime: "今日",
+            subTitle: "今日",
+            count: 3210,
+            unit: "",
+            mtm: 95,
+            yty: 46,
+            mtm_unit:'down',
+            yty_unit:'up',
+        },
+    }
 
+})

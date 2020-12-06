@@ -26,7 +26,7 @@
         <span class="subTime">| {{ scope.data.subTime }}</span>
       </div>
       <div class="subtitle">{{ scope.data.subTitle }}</div>
-      <div class="content">
+      <div class="content" v-if="scope.data.count">
         <slot name="count">
           <count-to
             class="number"
@@ -41,7 +41,13 @@
       <div class="compare-wrap">
         <div class="compare monthOnMonth">
           <span> 环比 </span>
-          <span class="row up"></span>
+          <span
+            :class="{
+              row: true,
+              up: scope.data.mtm_unit === 'up',
+              down: scope.data.mtm_unit === 'down',
+            }"
+          ></span>
           <span>
             <count-to
               class="num"
@@ -53,7 +59,13 @@
         </div>
         <div class="compare yearOnYear">
           <span> 同比 </span>
-          <span class="row down"></span>
+          <span
+            :class="{
+              row: true,
+              up: scope.data.yty_unit === 'up',
+              down: scope.data.yty_unit === 'down',
+            }"
+          ></span>
           <span>
             <count-to
               class="num"
@@ -68,12 +80,12 @@
         class="bottom"
         v-if="options.size === 'big' || options.size === 'middle'"
       >
-        <div>
-          <span>合计 </span> <span class="count">{{ 2000 }}</span
+        <div style="white-space:nowrap;">
+          <span>合计 </span> <span class="count">{{ scope.data.allCount }}</span
           ><span> 人</span>
         </div>
-        <div>
-          <span>新增 </span> <span class="count">{{ 800 }}</span
+        <div style="white-space:nowrap;">
+          <span>均值 </span> <span class="count">{{ scope.data.avgCount }}</span
           ><span> 人</span>
         </div>
       </div>
@@ -96,9 +108,9 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import base from '@/components/api-card/chartsCard/base.vue';
-import countTo from 'vue-count-to';
+} from "vue-property-decorator";
+import base from "@/components/api-card/chartsCard/base.vue";
+import countTo from "vue-count-to";
 
 @Component({
   components: {
@@ -187,10 +199,10 @@ export default class extends Vue {
   border: 8px solid transparent;
 }
 .up {
-  border-bottom-color: red;
+  border-bottom-color: green;
 }
 .down {
-  border-top-color: green;
+  border-top-color: red;
   top: 6px;
 }
 </style>

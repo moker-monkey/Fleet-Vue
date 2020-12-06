@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import i18n from '@/plugins/i18n'
 import animate from 'animate.css'
+import api from '@/api/install'
 import '@/plugins/element'
 import '@/plugins/apiVue'
 import '@/router/routerListener'
@@ -15,6 +16,7 @@ import '@/styles/index.scss'
 
 Vue.config.productionTip = false;
 Vue.use(animate)
+Vue.use(api)
 
 new Vue({
   router,

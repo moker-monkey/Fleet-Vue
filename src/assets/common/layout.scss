@@ -39,7 +39,7 @@
     // views 
     .layout-view {
         height: $content-view-height;
-        overflow: auto;
+        overflow-x: hidden;
     }
 
 }
