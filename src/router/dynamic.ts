@@ -19,7 +19,7 @@ const routes: RouteConfig[] = [
             }, {
                 path: 'realtime',
                 name: 'realtime',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/overview/realtime.vue'),
                 meta: {
                     title: 'realtime',
 

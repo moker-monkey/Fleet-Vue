@@ -38,7 +38,7 @@
       </div>
     </template>
     <template v-slot:subCount="scope">
-      <div class="compare-wrap">
+      <div class="compare-wrap" v-if="scope.data.mtm&&scope.data.yty">
         <div class="compare monthOnMonth">
           <span> 环比 </span>
           <span
@@ -78,7 +78,7 @@
       </div>
       <div
         class="bottom"
-        v-if="options.size === 'big' || options.size === 'middle'"
+        v-if="(options.size === 'big' || options.size === 'middle')&&scope.data.allCount&&scope.data.avgCount"
       >
         <div style="white-space:nowrap;">
           <span>合计 </span> <span class="count">{{ scope.data.allCount }}</span
