@@ -4,6 +4,7 @@ svg iconfont的核心条件就是让svg标签脱离文档流后，symbol就能�
 为了不需要修改多余的iconfont样式，iconfont建议统一使用[fontAwesome](https://fontawesome.dashgame.com/)
 
 ## 项目目录及说明
+```
 | src
 |- api  (用于存放api的配置)
 |- assets  (用于存放各类资源，包括图片，样式，字体，JSON数据，markdown)
@@ -20,6 +21,21 @@ svg iconfont的核心条件就是让svg标签脱离文档流后，symbol就能�
 |- template （不会被任何页面引用的文件，仅仅当做模板，粘贴复制用）
 |- utils (一些工具)
 |- views (业务文件都写在里面)
+```
+
+## 未来需要完善的功能清单
+### 基础架构
+1. 骨架屏自动生成
+2. 前端监听接口
+3. 前端自动化测试
+4. SSR流程
+5. api缓存模块
+6. 图片离线缓存
+7. 侧边栏自适应
+### 组件及相关部分
+1. doc文档组件
+2. api-select（核心功能是只有传入的参数变化时才会再次去获取数据）
+3. apiMixins(用于混淆组件，使组件具备获取api管理的属性和功能（包括api）)
 
 ## Project setup
 ```
