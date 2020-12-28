@@ -50,6 +50,21 @@
         </card1>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="12">
+        <card1 :data="card_data.newuser">
+          <el-table
+            :data="[
+              { name: 123, hello: 321 },
+              { name: 123, hello: 321 },
+            ]"
+          >
+            <el-table-column prop="name" label="name"></el-table-column>
+            <el-table-column prop="hello" label="hello"></el-table-column>
+          </el-table>
+        </card1>
+      </el-col>
+    </el-row>
   </fragment>
 </template>
 <script lang="ts">
@@ -74,6 +89,16 @@ import lineCharts from '@/example/charts/lineCharts.vue';
 export default class extends Vue {
   public card_data = {
     newuser: {
+      title: '实时 | 累计新增用户',
+      date: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+      subTime: '今日',
+      subTitle: '今日',
+      count: 2020,
+      unit: '人',
+      mtm: 30,
+      yty: 40,
+    },
+    styleThree: {
       title: '实时 | 累计新增用户',
       date: new Date().Format('yyyy-MM-dd hh:mm:ss'),
       subTime: '今日',

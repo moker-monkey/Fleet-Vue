@@ -89,6 +89,9 @@
           ><span> 人</span>
         </div>
       </div>
+      <div class="bottom" v-if="(options.size === 'big' || options.size === 'middle')&&scope.data.percent">
+        
+      </div>
     </template>
     <template #content>
       <slot name="content"></slot>
@@ -108,9 +111,9 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import base from "@/components/api-card/chartsCard/base.vue";
-import countTo from "vue-count-to";
+} from 'vue-property-decorator';
+import base from '@/components/api-card/chartsCard/base.vue';
+import countTo from 'vue-count-to';
 
 @Component({
   components: {

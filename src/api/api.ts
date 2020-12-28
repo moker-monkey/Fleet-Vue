@@ -27,9 +27,10 @@ export let getNotify = new api(scope, 'notify')
 export let logout = new api(scope, 'logout')
 export let route = new api(scope, 'route') // 用于做路由权限
 export let notice = new api(scope, 'notice').setName('通知').setDescription('用于header工具栏的通知')
-// export let registrationAnalysisCard = new api(scope, 'rac').setName('注册分析的卡片组')
-export let realtime = new api(scope,'realtime').setName('实时统计')
-export let realtimeCard = new api(scope,'realtimeCard').setName('实时统计卡片')
+export let registrationAnalysisCard = new api(scope, 'rac').setName('注册分析的卡片组')
+export let realtime = new api(scope, 'realtime').setName('实时统计')
+export let realtimeCard = new api(scope, 'realtimeCard').setName('实时统计卡片')
+export let stackCharts = new api(scope, 'stackCharts').setName('折线图')
 
 export { api }  // 这样导出会直接挂载到module上，如果是export api会挂载到module.default后，
 export { _Api as Api }
