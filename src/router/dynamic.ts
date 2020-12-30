@@ -11,7 +11,7 @@ const routes: RouteConfig[] = [
             {
                 path: 'overview',
                 name: 'overview',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/overview/overview.vue'),
                 meta: {
                     title: 'overview',
 

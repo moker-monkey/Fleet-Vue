@@ -22,7 +22,7 @@
           <lineCharts style="width: 100%; height: 200px"></lineCharts>
         </template>
         <template #dialog> </template>
-      </card1>77777
+      </card1>
     </el-col>
     <el-col :span="12" class="item">
       <card1
@@ -92,7 +92,7 @@ import {
 } from 'vue-property-decorator';
 
 import searchBar from '../components/searchBar/searchBar.vue';
-import cardGroup from './realtimeCard.vue';
+import cardGroup from './overviewCard.vue';
 import lineCharts from '@/example/charts/lineCharts.vue';
 import card1 from '../components/chartsCard/card-1.vue';
 
@@ -107,7 +107,9 @@ import card1 from '../components/chartsCard/card-1.vue';
 export default class extends Vue {
   public card_data = {};
   public mounted() {
-    this.$api.realtime.GET().then((res: any) => {
+    console.log('hello', this.$api);
+    this.$api.overview.GET().then((res: any) => {
+      console.log('good', res);
       this.card_data = res.data.results;
     });
   }
