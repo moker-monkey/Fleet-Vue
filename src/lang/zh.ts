@@ -11,6 +11,7 @@ export default {
     'registrationAnalysis': '注册分析',
     'rechargeActive': '充值活跃',
     'rechargeAnalysis': '充值分析',
+    'activeAnalysis':'活跃分析',
     'consumeAnalysis': '消费分析',
     'balanceAnalysis': '余额分析',
     'channelAnalysis': '渠道分析',

@@ -12,7 +12,7 @@
   >
     <template v-slot:count="scope">
       <div class="title">
-        <span class="title">{{ scope.data.title }}</span>
+        <span class="inner_title">{{ scope.data.title }}</span>
         <span>
           <slot name="tool" v-if="options.tool">
             <el-button type="text" size="mini" @click="showDialog = true"
@@ -38,7 +38,7 @@
       </div>
     </template>
     <template v-slot:subCount="scope">
-      <div class="compare-wrap" v-if="scope.data.mtm&&scope.data.yty">
+      <div class="compare-wrap" v-if="scope.data.mtm && scope.data.yty">
         <div class="compare monthOnMonth">
           <span> 环比 </span>
           <span
@@ -78,27 +78,35 @@
       </div>
       <div
         class="bottom"
-        v-if="(options.size === 'big' || options.size === 'middle')&&scope.data.allCount&&scope.data.avgCount"
+        v-if="
+          (options.size === 'big' || options.size === 'middle') &&
+          scope.data.allCount &&
+          scope.data.avgCount
+        "
       >
-        <div style="white-space:nowrap;">
+        <div style="white-space: nowrap">
           <span>合计 </span> <span class="count">{{ scope.data.allCount }}</span
           ><span> 人</span>
         </div>
-        <div style="white-space:nowrap;">
+        <div style="white-space: nowrap">
           <span>均值 </span> <span class="count">{{ scope.data.avgCount }}</span
           ><span> 人</span>
         </div>
       </div>
-      <div class="bottom" v-if="(options.size === 'big' || options.size === 'middle')&&scope.data.percent">
-        
-      </div>
+      <div
+        class="bottom"
+        v-if="
+          (options.size === 'big' || options.size === 'middle') &&
+          scope.data.percent
+        "
+      ></div>
     </template>
-    <template #content>
-      <slot name="content"></slot>
+    <template v-slot:content="scope">
+      <slot name="content" :data="scope"></slot>
     </template>
 
-    <template v-slot:dialog>
-      <slot name="dialog"></slot>
+    <template v-slot:dialog="scope">
+      <slot name="dialog" :data="scope"></slot>
     </template>
   </base-card>
 </template>
@@ -111,9 +119,9 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import base from '@/components/api-card/chartsCard/base.vue';
-import countTo from 'vue-count-to';
+} from "vue-property-decorator";
+import base from "@/components/api-card/chartsCard/base.vue";
+import countTo from "vue-count-to";
 
 @Component({
   components: {

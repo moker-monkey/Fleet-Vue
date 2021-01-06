@@ -22,7 +22,7 @@
           <lineCharts style="width: 100%; height: 200px"></lineCharts>
         </template>
         <template #dialog> </template>
-      </card1>77777
+      </card1>
     </el-col>
     <el-col :span="12" class="item">
       <card1

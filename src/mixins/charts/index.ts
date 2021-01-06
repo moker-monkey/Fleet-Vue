@@ -4,12 +4,13 @@ import api from "@/api/index.ts"
 import echarts from 'echarts'
 import Resize from "../resize"
 import { Loading } from 'element-ui';
+import Api from '@/api/Model'
 
 @Component
 export default class EchartsMixin extends mixins(Vue, Resize) {
     @Prop()
     public title?: string;
-    @Prop({ default: api.games })
+    @Prop({ default:()=> api.empty })
     public api?: Api
     @Prop({
         default: false

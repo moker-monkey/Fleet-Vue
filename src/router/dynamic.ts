@@ -27,7 +27,7 @@ const routes: RouteConfig[] = [
             }, {
                 path: 'rankingList',
                 name: 'rankingList',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/overview/top.vue'),
                 meta: {
                     title: 'rankingList',
 
@@ -50,15 +50,23 @@ const routes: RouteConfig[] = [
             }, {
                 path: 'rechargeActive',
                 name: 'rechargeActive',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/basicData/rechargeActive.vue'),
                 meta: {
                     title: 'rechargeActive',
 
                 }
             }, {
+                path: 'activeAnalysis',
+                name: 'activeAnalysis',
+                component: () => import('@/views/basicData/activeAnalysis.vue'),
+                meta: {
+                    title: 'activeAnalysis',
+
+                }
+            },{
                 path: 'rechargeAnalysis',
                 name: 'rechargeAnalysis',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/basicData/rechargeAnalysis.vue'),
                 meta: {
                     title: 'rechargeAnalysis',
 
@@ -66,7 +74,7 @@ const routes: RouteConfig[] = [
             }, {
                 path: 'consumeAnalysis',
                 name: 'consumeAnalysis',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/basicData/consumeAnalysis.vue'),
                 meta: {
                     title: 'consumeAnalysis',
 
@@ -74,7 +82,7 @@ const routes: RouteConfig[] = [
             }, {
                 path: 'balanceAnalysis',
                 name: 'balanceAnalysis',
-                component: () => import('@/views/Dashboard.vue'),
+                component: () => import('@/views/basicData/balanceAnalysis.vue'),
                 meta: {
                     title: 'balanceAnalysis',
 
@@ -284,7 +292,7 @@ const routes: RouteConfig[] = [
             {
                 path: 'daily',
                 name: 'daily',
-                component: () => import('@/views/reports/daily.vue'),
+                component: () => import('@/views/dayWeekReport/dailyReport.vue'),
                 meta: {
                     title: 'daily',
                 }

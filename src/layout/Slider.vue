@@ -6,7 +6,6 @@
       :collapse="isCollapse"
     />
     <Menu
-      style="width: 100%"
       @select="select"
       :isCollapse="isCollapse"
       :active="currentActive"
@@ -60,8 +59,6 @@ export default class Slider extends Vue {
 .slide {
   height: 100%;
   background-color: $slide-background-color;
-}
-.notCollapse {
-  width: $slide-width;
+  
 }
 </style>

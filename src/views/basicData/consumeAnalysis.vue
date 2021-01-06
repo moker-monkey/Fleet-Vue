@@ -5,7 +5,7 @@
     </el-row>
     <card-group></card-group>
     <el-col :span="24" class="item">
-      <card1 :data="card_data.onlineTrend" :options="{ tool: false, size: 'big' }">
+      <card1 :data="card_data.dailyRechargeMoney" :options="{ tool: false, size: 'big' }">
         <template #content>
           <lineCharts style="width: 100%; height: 200px"></lineCharts>
         </template>
@@ -15,7 +15,7 @@
     <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.dailyNewRegister"
+        :data="card_data.dailyActiveUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -26,7 +26,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.newAddUser"
+        :data="card_data.dailyRechargeUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -35,10 +35,10 @@
         <template #dialog> </template>
       </card1>
     </el-col>
-    <!-- ---------------------- -->
+    <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.activeUser"
+        :data="card_data.dailyNewRechargeUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -49,7 +49,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.recharge"
+        :data="card_data.dailyRechargePermeateRate"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -58,10 +58,10 @@
         <template #dialog> </template>
       </card1>
     </el-col>
-    <!-- ----------------------------------------- -->
+    <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.consume"
+        :data="card_data.weekActiveUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -70,18 +70,9 @@
         <template #dialog> </template>
       </card1>
     </el-col>
-    <el-col :span="12" class="item">
-      <card1 :data="card_data.dailyRecharge" :options="{ tool: false, size: 'middle' }">
-        <template #content>
-          <lineCharts style="width: 100%; height: 200px"></lineCharts>
-        </template>
-        <template #dialog> </template>
-      </card1>
-    </el-col>
-    <!-- ---------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.dailyConsume"
+        :data="card_data.weekRechargeUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -90,19 +81,21 @@
         <template #dialog> </template>
       </card1>
     </el-col>
-    <el-col :span="12" class="item">
-      <card1 :data="card_data.dailyRechargeAndConsume" :options="{ tool: false, size: 'middle' }">
-        <template #content>
-          <lineCharts style="width: 100%; height: 200px"></lineCharts>
-        </template>
-        <template #dialog> </template>
-      </card1>
-    </el-col>
-    <!-- ---------------------- -->
-    <!-- ---------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.dailyRechargePenetrance"
+        :data="card_data.weekRechargePermeateRate"
+        :options="{ tool: false, size: 'middle' }"
+      >
+        <template #content>
+          <lineCharts style="width: 100%; height: 200px"></lineCharts>
+        </template>
+        <template #dialog> </template>
+      </card1>
+    </el-col>
+    <!-- -------------------------------- -->
+    <el-col :span="12" class="item">
+      <card1
+        :data="card_data.monthActiveUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -112,14 +105,29 @@
       </card1>
     </el-col>
     <el-col :span="12" class="item">
-      <card1 :data="card_data.dailyConsumePenetrance" :options="{ tool: false, size: 'middle' }">
+      <card1
+        :data="card_data.monthRechargeUser"
+        :options="{ tool: false, size: 'middle' }"
+      >
         <template #content>
           <lineCharts style="width: 100%; height: 200px"></lineCharts>
         </template>
         <template #dialog> </template>
       </card1>
     </el-col>
-    <!-- ---------------------- -->
+    <!-- -------------------------------- -->
+    <el-col :span="12" class="item">
+      <card1
+        :data="card_data.monthRechargePermeateRate"
+        :options="{ tool: false, size: 'middle' }"
+      >
+        <template #content>
+          <lineCharts style="width: 100%; height: 200px"></lineCharts>
+        </template>
+        <template #dialog> </template>
+      </card1>
+    </el-col>
+    
   </el-row>
 </template>
 <script lang="ts">
@@ -134,7 +142,7 @@ import {
 } from 'vue-property-decorator';
 
 import searchBar from '../components/searchBar/searchBar.vue';
-import cardGroup from './overviewCard.vue';
+import cardGroup from './registrationAnalysisCard.vue';
 import lineCharts from '@/example/charts/lineCharts.vue';
 import card1 from '../components/chartsCard/card-1.vue';
 
@@ -150,7 +158,7 @@ export default class extends Vue {
   public card_data = {};
   public mounted() {
     console.log('hello', this.$api);
-    this.$api.overview.GET().then((res: any) => {
+    this.$api.activeAnalysis.GET().then((res: any) => {
       console.log('good', res);
       this.card_data = res.data.results;
     });

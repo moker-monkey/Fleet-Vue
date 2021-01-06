@@ -170,9 +170,13 @@ export default class extends Vue {
       if (valid) {
         this.loading = true;
         await UserModule.Login(this.loginForm);
+        console.log('ok')
         this.$router.push({
           path: this.redirect || '/',
           query: this.otherQuery,
+        }).catch((err:any)=>{
+          console.log('login',err)
+          
         });
         // Just to simulate the time of the request
         setTimeout(() => {

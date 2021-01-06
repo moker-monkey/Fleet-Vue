@@ -2,10 +2,7 @@
 <template>
   <api-card class="base-card">
     <el-row class="wrap">
-      <el-col
-        class="header"
-        :span="options.size === 'big' ? 4 : 24"
-      >
+      <el-col class="header" :span="options.size === 'big' ? 4 : 24">
         <div class="subCountent">
           <div class="count">
             <slot name="count" :data="data"></slot>
@@ -16,11 +13,11 @@
         </div>
       </el-col>
       <el-col class="content" :span="options.size === 'big' ? 20 : 24">
-        <slot name="content"></slot>
+        <slot name="content" :data="data"></slot>
       </el-col>
     </el-row>
     <el-dialog :visible.sync="showDialog">
-      <slot name="dialog"></slot>
+      <slot name="dialog" :data="data"></slot>
     </el-dialog>
   </api-card>
 </template>
@@ -33,11 +30,11 @@ import {
   Model,
   Watch,
   Component,
-} from 'vue-property-decorator';
-import countTo from 'vue-count-to';
+} from "vue-property-decorator";
+import countTo from "vue-count-to";
 
 interface data {
-  title: '';
+  title: "";
 }
 interface options {
   tool: boolean;
@@ -109,13 +106,16 @@ export default class extends Vue {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    .count {
+      width: 100%;
+    }
   }
   .inline {
     display: flex;
     justify-content: space-between;
     align-self: flex-end;
     width: 100%;
-    padding-bottom:10px;
+    padding-bottom: 10px;
   }
 }
 </style>

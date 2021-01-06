@@ -18,7 +18,7 @@ Vue.config.productionTip = false;
 Vue.use(animate)
 Vue.use(api)
 
-new Vue({
+export default new Vue({
   router,
   store,
   i18n,
