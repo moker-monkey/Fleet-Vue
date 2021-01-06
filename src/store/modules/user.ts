@@ -58,10 +58,13 @@ class User extends VuexModule implements IUserState {
         // tslint:disable-next-line: prefer-const
         let { username, password } = userInfo
         username = username.trim()
-        const { data } = await login.GET({ username, password })
+        const { data } = await login.GET({ username, password }) //获取token
         // 两种方式都支持，cookie模式与localstorage模式
-        setToken(data.token)
-        this.SET_TOKEN(data.token)
+        setToken(data.token) //设置cookie token
+        this.SET_TOKEN(data.token) //设置localStorage token
+        // 然后接收
+        resetRouter()
+        return 'success'
     }
 
     @Action
@@ -119,6 +122,7 @@ class User extends VuexModule implements IUserState {
 
     @Mutation
     private SET_TOKEN(token: string) {
+        localStorage.setItem('token', token)
         this.token = token
     }
 

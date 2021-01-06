@@ -48,6 +48,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
         // Set the replace: true, so the navigation will not leave a history record
 
         // next({ ...to, replace: true })
+
       } catch (err) {
         // Remove token and redirect to login page
         UserModule.ResetToken()
@@ -58,7 +59,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
       next()
       // next({ path: '/' })
     }
-    setRoute();
+
     NProgress.done()
   } else {
     // Has no token
@@ -71,6 +72,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
       NProgress.done()
     }
   }
+  setRoute();
 })
 
 router.afterEach((to: Route) => {

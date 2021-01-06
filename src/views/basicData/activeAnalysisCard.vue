@@ -2,40 +2,16 @@
   <fragment>
     <el-row type="flex" :gutter="30" class="content-item">
       <el-col :span="6">
-        <card1 :data="card_data.newUser"></card1>
+        <card1 :data="card_data.dailyRegistration"></card1>
       </el-col>
       <el-col :span="6">
-        <card1 :data="card_data.oldUser"></card1>
+        <card1 :data="card_data.weekRegistration"></card1>
       </el-col>
       <el-col :span="6">
-        <card1 :data="card_data.dayActiveUser"></card1>
+        <card1 :data="card_data.monthRegistration"></card1>
       </el-col>
       <el-col :span="6">
-        <card1 :data="card_data.visitCount"></card1>
-      </el-col>
-    </el-row>
-    <el-row type="flex" :gutter="30" class="content-item">
-      <el-col :span="6">
-        <card1 :data="card_data.recharge"></card1>
-      </el-col>
-      <el-col :span="6">
-        <card1 :data="card_data.extract"></card1>
-      </el-col>
-      <el-col :span="6">
-        <card1 :data="card_data.draw"></card1>
-      </el-col>
-      <el-col :span="6">
-        <card1 :data="card_data.discount">
-          <el-table
-            :data="[
-              { name: 123, hello: 321 },
-              { name: 123, hello: 321 },
-            ]"
-          >
-            <el-table-column prop="name" label="name"></el-table-column>
-            <el-table-column prop="hello" label="hello"></el-table-column>
-          </el-table>
-        </card1>
+        <card1 :data="card_data.dayUser"></card1>
       </el-col>
     </el-row>
   </fragment>
@@ -74,7 +50,7 @@ export default class extends Vue {
   };
   
   public mounted() {
-    this.$api.registrationAnalysisCard.GET().then((res:any)=>{
+    this.$api.activeAnalysisCard.GET().then((res:any)=>{
       this.card_data = res.data.results
     });
   }

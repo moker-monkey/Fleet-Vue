@@ -65,4 +65,7 @@ export default class Menu extends Vue {
 </script>
 <style lang="scss">
 @import "@/assets/common/settings.scss";
+.menu-slide:not(.el-menu--collapse) {
+  width: $slide-width;
+}
 </style>

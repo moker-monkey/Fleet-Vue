@@ -4,14 +4,6 @@
       <search-bar @search="handler_search" :showList="['channel']"></search-bar>
     </el-row>
     <card-group></card-group>
-    <el-col :span="24" class="item">
-      <card1 :data="card_data.peopleNumber" :options="{ tool: false, size: 'big' }">
-        <template #content>
-          <lineCharts style="width: 100%; height: 200px"></lineCharts>
-        </template>
-        <template #dialog> </template>
-      </card1>
-    </el-col>
     <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
@@ -26,7 +18,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.stayUser"
+        :data="card_data.activeUser"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -38,7 +30,7 @@
     <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.monthStayUserRate"
+        :data="card_data.activeOnlineDays"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -49,30 +41,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.weightedStayUserRate"
-        :options="{ tool: false, size: 'middle' }"
-      >
-        <template #content>
-          <lineCharts style="width: 100%; height: 200px"></lineCharts>
-        </template>
-        <template #dialog> </template>
-      </card1>
-    </el-col>
-    <!-- -------------------------------- -->
-    <el-col :span="12" class="item">
-      <card1
-        :data="card_data.lostUser"
-        :options="{ tool: false, size: 'middle' }"
-      >
-        <template #content>
-          <lineCharts style="width: 100%; height: 200px"></lineCharts>
-        </template>
-        <template #dialog> </template>
-      </card1>
-    </el-col>
-    <el-col :span="12" class="item">
-      <card1
-        :data="card_data.lostUserRate"
+        :data="card_data.activeUserDailyRate"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -84,7 +53,7 @@
     <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.weightedLostUserRate"
+        :data="card_data.weightedActiveRate"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -95,7 +64,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.usefulStayUser"
+        :data="card_data.rechargePeople"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -107,7 +76,7 @@
     <!-- -------------------------------- -->
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.usefulStayUserRate"
+        :data="card_data.rechargeTransformRate"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -118,7 +87,7 @@
     </el-col>
     <el-col :span="12" class="item">
       <card1
-        :data="card_data.loginRate"
+        :data="card_data.avgRecharge"
         :options="{ tool: false, size: 'middle' }"
       >
         <template #content>
@@ -157,7 +126,7 @@ export default class extends Vue {
   public card_data = {};
   public mounted() {
     console.log('hello', this.$api);
-    this.$api.registrationAnalysis.GET().then((res: any) => {
+    this.$api.rechargeActive.GET().then((res: any) => {
       console.log('good', res);
       this.card_data = res.data.results;
     });
