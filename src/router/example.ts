@@ -27,7 +27,15 @@ const exampleRouter: RouteConfig[] = [{
         meta: {
             title: 'chartsCard',
         }
-    }]
+    }, {
+        path: 'table',
+        name: 'table',
+        component: () => import(/* webpackChunkName: "example" */
+            '@/example/table/index.vue'),
+        meta: {
+            title: 'table',
+        }
+    }, ]
 }]
 
 export default exampleRouter;
