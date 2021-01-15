@@ -30,15 +30,53 @@ interface request_interceptors {
     success(config: AxiosRequestConfig): any,
     error(error: AxiosError): any
 }
+let validate: (x: string) => number;
 export default class Api {
     public static mockDataList: any[] = [];
     public static dataAdapter: any[] = [];
+    public static paramsList: any[] = [];
+    public static quote: any = {}
+    public static validate: any = {}
+
+    public static setValidate(name: string, validate: any) {
+        this.validate[name] = validate
+    }
+
+    public static setQuote(name: string, params: Param[]) {
+        this.quote[name] = params
+    }
     public success: any;
     public error: any;
     public isUseMock: boolean = false;
+    public isUseParams: boolean = false;
     public baseurl!: string;
     public mockSchema?: object;
     public describe?: string;
+    public isUseParamsValidate: boolean = false;
+    public validate: any = {
+        type: (value: any, params: any) => {
+            if (params.type.indexOf('[]') === -1) {
+                // 非数组只需要校验value本身的type即可
+                if (typeof value !== 'object') {
+                    return typeof value === params.type
+                } else if (params.type === 'object') {
+                    return value.constructor === Object
+                }
+            } else if (params.type.indexOf('[]') !== -1) {
+                if (params.type === 'object[]') {
+                    // 如果为object[]则先判断是否为array,
+                    // 之后判断array中的元素是否都是Object
+                    // 再然后判断每一个Object是否和引用的格式相同
+                    // this.type()
+                } else if (params.type === 'string[]') {
+
+                }
+
+            }
+
+        }
+    }
+
     private config!: AxiosRequestConfig;
     private request_interceptor: request_interceptors = {
         success(config) { },
@@ -70,6 +108,7 @@ export default class Api {
     public startInterceptor() {
         Axios.interceptors.request.use((config: AxiosRequestConfig) => {
             config = Object.assign(config, this.request_interceptor.success.call(this, config) || {})
+            this.isUseParamsValidate && this.params_interceptors(config)
             // tslint:disable-next-line: no-unused-expression
             this.isUseMock && (config = Object.assign(config, this.mock_interceptors(config) || {}))
             return config
@@ -89,14 +128,37 @@ export default class Api {
     }
     public mock_interceptors(config: AxiosRequestConfig) {
         for (const i of Api.mockDataList) {
-            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
-                const index = i.alreadyMethod.indexOf(config.method?.toLocaleUpperCase())
+            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyMockMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
+                const index = i.alreadyMockMethod.indexOf(config.method?.toLocaleUpperCase())
                 Mock.mock(new RegExp(i.route + '\\.*'), i.mock[index].schema)
                 console.warn(`[Mock request]method:${i.mock[index].methods}&&url:${i.route}`)
             }
         }
         return config
     }
+    public params_interceptors(config: AxiosRequestConfig) {
+        for (const i of Api.paramsList) {
+            // 判断methods与url是否相同以及是否启用params
+            if ((i.isUseParams && this.isUseParams) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyParamsMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
+                const index: params = i.alreadyParamsMethod.indexOf(config.method?.toLocaleLowerCase())
+                for (const field_obj of index.param) {
+                    // j表示每一个字段的对象
+                    this.params_validate(config.params, field_obj)
+                }
+            }
+        }
+    }
+    public params_validate(value: any, params: Param) {
+        if (params.validate && params.validate.length) {
+            for (const i of params.validate) {
+                Api.validate[i](value, params) // TODO: 添加字段校验，返回f
+            }
+        } else {
+            return true
+        }
+
+    }
+
     public data_adapter(res: AxiosResponse) {
         for (const i of Api.dataAdapter) {
             // dataAdapter目前只支持转换get请求的返回数据，其他的暂时没有必要
@@ -119,19 +181,44 @@ interface mock {
     methods: Method;
     schema: any;
 }
+enum paramsType {
+    'string' = 'string',
+    'number' = 'number',
+    'boolean' = 'boolean',
+    'object' = 'object',
+    'string[]' = 'string[]',
+    'number[]' = 'number[]',
+    'boolean[]' = 'boolean[]',
+    'object[]' = 'object[]'
+}
+interface Param {
+    key: string,
+    require: boolean,
+    type: paramsType,
+    isNull: boolean,
+    validate: string[] | [],
+    quote?: string,
+    list?: any[]
+}
+interface params {
+    methods: Method,
+    param: Param[]
+}
 // tslint:disable-next-line: max-classes-per-file
 export class api {
     public affix?: string | undefined;
     public adapter: any = null;
     public mock: mock[] = []
+    public params: params[] = []
     public isUseMock: boolean = false;
-    public alreadyMethod: Method[] = [];
+    public isUseParams: boolean = false;
+    public alreadyMockMethod: Method[] = [];
+    public alreadyParamsMethod: Method[] = [];
     private route!: string;
     private url!: string;
     private axios: AxiosStatic = Axios;
     private name!: string;
     private description!: string;
-    private params!: string;
 
     constructor(route: string, route1?: string, route2?: string, route3?: string, route4?: string, otherRoute?: string[]) {
         // scope与route后都不需要带/,有函数自动判断并添加
@@ -159,10 +246,7 @@ export class api {
         this.description = description;
         return this
     }
-    public setParams(params: any) {
-        this.params = params;
-        return this
-    }
+
     public createAffixApi(affix: string) {
         return new api(this.route, '#', affix)
     }
@@ -198,10 +282,10 @@ export class api {
 
     public setMock(methods: Method, schema: any) {
         this.mock.push({ methods, schema });
-        if (this.alreadyMethod.indexOf(methods) !== -1) {
+        if (this.alreadyMockMethod.indexOf(methods) !== -1) {
             throw Error(`${this.name ? this.name : this.url}，Api定义了重复的Method,确保该api的每种method只设置了一个mock数据`)
         } else {
-            this.alreadyMethod.push(methods)
+            this.alreadyMockMethod.push(methods)
         }
         this.isUseMock = true;
         Api.mockDataList.push(this)
@@ -211,7 +295,20 @@ export class api {
         this.adapter = callback;
         Api.dataAdapter.push(this)
     }
-
+    public setQuote(params: Param[]) {
+        // 从全局注册的quote中找到对应的quote，加入到param中
+    }
+    public setParams(methods: Method, param: Param[]) {
+        this.setQuote(param)
+        this.params.push({ methods, param })
+        if (this.alreadyParamsMethod.indexOf(methods) !== -1) {
+            throw Error(`${this.name ? this.name : this.url}，Api定义Params时有重复的Method,确保该api的每种method只设置了一个mock数据`)
+        } else {
+            this.alreadyParamsMethod.push(methods)
+        }
+        this.isUseMock = true;
+        Api.paramsList.push(this)
+    }
     public MockOn(flag: boolean) {
         this.isUseMock = flag;
         return this
@@ -221,4 +318,4 @@ export class api {
     }
 
 }
-export { Axios }
+export { Axios, paramsType }

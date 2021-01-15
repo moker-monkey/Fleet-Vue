@@ -12,7 +12,7 @@ const config: AxiosRequestConfig = {
 _Api.setRequestInterceptors(
     (_config: AxiosRequestConfig) => {
         if (localStorage.getItem('token')) {
-            _config.headers['Authorization'] = localStorage.getItem('token')
+            _config.headers.Authorization = localStorage.getItem('token')
         } else {
             vue.$router.push('/login')
         }
@@ -34,9 +34,9 @@ _Api.setResponseInterceptors(
 _Api.mock_all(true)
 const api = _Api.createApi(config)
 const scope = 'api'
-export let empty = new api(scope, 'empty')
+export let empty = new api(scope, 'empty').setName('空的占位符').setDescription('当必须要绑定一个api时，可以绑定它')
 export let user = new api(scope, 'user').setName('用户信息').setDescription('包含用户头像，用户username，id，等信息')
-export let login = new api(scope, 'login')
+export let login = new api(scope, 'login').setName('登录请求')
 export let getUserInfo = new api(scope, 'userInfo')
 export let getNotify = new api(scope, 'notify')
 export let logout = new api(scope, 'logout')

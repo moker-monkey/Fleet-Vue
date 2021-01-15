@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "docs": "cd docs && npm run serve",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -19,13 +20,15 @@
     "@types/scrollmagic": "^2.0.1",
     "@types/vue-i18n": "^7.0.0",
     "animate.css": "^4.1.1",
+    "ant-design-vue": "^1.7.2",
     "axios": "^0.20.0",
-    "core-js": "^3.6.5",
+    "core-js": "^3.8.2",
     "echarts": "^4.9.0",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.14.1",
     "font-awesome": "^4.7.0",
     "is-json": "^2.0.1",
     "js-cookie": "^2.2.1",
+    "koa": "^2.13.1",
     "lodash": "^4.17.20",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
@@ -41,6 +44,8 @@
     "vue-property-decorator": "^8.5.1",
     "vue-router": "^3.2.0",
     "vue-svgicon": "^4.0.1-alpha.0",
+    "vuepress": "^1.8.0",
+    "vuepress-plugin-demo-container": "^0.2.0",
     "vuex": "^3.4.0",
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^0.17.0"

@@ -31,20 +31,27 @@
         </Card>
       </Container>
     </Container>
+    <el-checkbox-group v-model="checkList">
+      <el-checkbox label="复选框 A"></el-checkbox>
+      <el-checkbox label="复选框 B"></el-checkbox>
+      <el-checkbox label="复选框 C"></el-checkbox>
+      <el-checkbox label="禁用" disabled></el-checkbox>
+      <el-checkbox label="选中且禁用" disabled></el-checkbox>
+    </el-checkbox-group>
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import Container from "@/components/api-card/gridCard/container.vue";
-import Card from "@/components/api-card/gridCard/card.vue";
+import HelloWorld from '@/components/HelloWorld.vue';
+import Container from '@/components/api-card/gridCard/container.vue';
+import Card from '@/components/api-card/gridCard/card.vue';
 
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
+import { Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 
 @Component({
-  name: "Home",
+  name: 'Home',
   components: {
     HelloWorld,
     Container,
@@ -52,10 +59,11 @@ import Vue from "vue";
   },
 })
 export default class Home extends Vue {
-  public state: string = "running";
+  public state: string = 'running';
+  public checkList: any = ['选中且禁用', '复选框 A'];
   public star() {
-    this.state = "running";
-    console.log("click");
+    this.state = 'running';
+    console.log('click');
   }
 }
 </script>

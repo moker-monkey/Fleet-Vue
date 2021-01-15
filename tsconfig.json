@@ -34,7 +34,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "image.d.ts", "src/example/apiManager/components/formatting.js"
+    "tests/**/*.tsx", "image.d.ts", "example/apiManager/components/formatting.js"
   ],
   "exclude": [
     "node_modules"

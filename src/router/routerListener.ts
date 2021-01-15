@@ -36,7 +36,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
   NProgress.start()
 
   // // Determine whether the user has logged in
-  if (UserModule.token) {
+  if (localStorage.getItem('token')) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
       try {
