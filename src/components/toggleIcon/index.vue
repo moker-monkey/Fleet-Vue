@@ -1,17 +1,17 @@
 <template>
   <div class="collspan-btn" @click="toggle_handle">
-    <api-icon
+    <fleet-icon
       :class="`icon-size-${icon_size}`"
       :type="icon_type"
       :name="name.on"
       v-if="state"
-    ></api-icon>
-    <api-icon
+    ></fleet-icon>
+    <fleet-icon
       :class="`icon-size-${icon_size}`"
       :type="icon_type"
       :name="name.off"
       v-else
-    ></api-icon>
+    ></fleet-icon>
   </div>
 </template>
 <script lang="ts">

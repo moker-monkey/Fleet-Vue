@@ -1,5 +1,6 @@
 import Axios, { AxiosStatic, AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, Method } from 'axios';
 import Mock from 'mockjs'
+import { parse } from 'path-to-regexp';
 
 // TODO:数据中转站(已完成)
 // 数据的流转中心，使用场景：当组件已经封装好了，但是后端给的数据结构不对，但是基本元素都存在，需要前端转换数据，此时就需要再数据中心挂载一个处理函数，
@@ -35,47 +36,110 @@ export default class Api {
     public static mockDataList: any[] = [];
     public static dataAdapter: any[] = [];
     public static paramsList: any[] = [];
-    public static quote: any = {}
-    public static validate: any = {}
+    public static validate_results: any[] = [];
+    public static validate: any = {
+        // 如果我的第一个字段为判断type,就不需要每个新增的规则再判断类型了
+        type: (value: any, field_item: any, argument: any) => {
+            // params是前端传过来的整个请求参数,或者一个值单一的值
+            // field_item是setParams中的一个元素
+            if (typeof value !== field_item.type) {
+                return { key: field_item.key, message: `该数据不是一个${field_item.type}类型` }
+            }
+            return true
+        },
+        require: (value: any, field_item: any, argument: any) => {
+            // 先校验最外层，把object.keys的值与field_item做对比
+            // 注意内嵌套object与object[]的情况，这两种情况最好封装一下，以避免重复的代码
+            console.log(value)
+            if (typeof value === undefined) {
+                return { key: field_item.key, message: `该数据不能为空` }
+            }
+            return true
+        }
+    }
+    public static quote: any = {};
+    public static parseQuote(field_obj: Param) {
+        // 将quote字符串解析为对象
+        if (field_obj.quote) {
+            return Api.quote[field_obj.quote]
+        }
+    }
+    public static parseMultiValue(field_obj: Param) {
+        // 它的作用是将多值解析为array
+        const value = field_obj.value
+        if (field_obj.separator) {
+            return value.split(field_obj.separator)
+        }
+        if (value instanceof Array) {
+            return value
+        } else {
+            return JSON.parse(value)
+        }
+    }
+    public static paramsToObject(params: Param[]) {
+        const obj: any = {}
+        for (const i of params) {
+            obj[i.key] = i.value
+        }
+    }
+    public static params_validate(value: any, field_obj: Param) {
+        // field_obj.value是原始的值，而新的temp是用来校验时解析后的值
+        // value是传入的值，当原始值是一个object的时候会拆解后传入，因此只有string,boolean,number,null,undefined等5种基本类型,不会存在array与object
+        field_obj.validate.concat(Object.keys(Api.validate))
+        if (field_obj && field_obj.quote && !field_obj.isMultiValue) {
+            const params = Api.parseQuote(field_obj)
+            for (const field_obj_quote of params) {
+                const value_obj = field_obj.value[field_obj_quote.key];
+                Api.params_validate(value_obj, field_obj_quote);
+            }
+        } else if (field_obj && field_obj.validate && field_obj.validate.length) {
+            for (const i of field_obj.validate) {
+                const validate_name = i instanceof Object ? i.name : i;
+                if (field_obj.isMultiValue) {
+                    if (field_obj.value) {
+                        // temp对象仅仅是用于验证
+                        const temp = JSON.parse(JSON.stringify(field_obj))
+                        // 解析后field_obj.value的值只会是array
+                        temp.value = Api.parseMultiValue(field_obj)
+                        for (const j of temp.value) {
+                            const result = Api.validate[validate_name](j, field_obj || value, i.argument)
+                            if (result !== true) {
+                                Api.validate_results.push(result)
+                            }
+                        }
+                    }
+                } else {
+                    const result = Api.validate[validate_name](field_obj.value || value, field_obj, i.argument)
+                    if (result !== true) {
+                        Api.validate_results.push(result)
+                    }
+                }
+            }
+            console.log('validate_results', Api.validate_results)
+        } else {
+            console.info(`${field_obj.key}字段没有设置验证方式`)
+            return true
+        }
+
+    }
 
     public static setValidate(name: string, validate: any) {
-        this.validate[name] = validate
+        Api.validate[name] = validate;
     }
 
     public static setQuote(name: string, params: Param[]) {
-        this.quote[name] = params
+        params.map((item) => {
+            item.__name = name;
+        })
+        Api.quote[name] = params;
     }
     public success: any;
     public error: any;
+    public isUseParamsValidate: boolean = false;
     public isUseMock: boolean = false;
-    public isUseParams: boolean = false;
     public baseurl!: string;
     public mockSchema?: object;
     public describe?: string;
-    public isUseParamsValidate: boolean = false;
-    public validate: any = {
-        type: (value: any, params: any) => {
-            if (params.type.indexOf('[]') === -1) {
-                // 非数组只需要校验value本身的type即可
-                if (typeof value !== 'object') {
-                    return typeof value === params.type
-                } else if (params.type === 'object') {
-                    return value.constructor === Object
-                }
-            } else if (params.type.indexOf('[]') !== -1) {
-                if (params.type === 'object[]') {
-                    // 如果为object[]则先判断是否为array,
-                    // 之后判断array中的元素是否都是Object
-                    // 再然后判断每一个Object是否和引用的格式相同
-                    // this.type()
-                } else if (params.type === 'string[]') {
-
-                }
-
-            }
-
-        }
-    }
 
     private config!: AxiosRequestConfig;
     private request_interceptor: request_interceptors = {
@@ -108,7 +172,7 @@ export default class Api {
     public startInterceptor() {
         Axios.interceptors.request.use((config: AxiosRequestConfig) => {
             config = Object.assign(config, this.request_interceptor.success.call(this, config) || {})
-            this.isUseParamsValidate && this.params_interceptors(config)
+            this.isUseParamsValidate && this.validate_interceptors(config)
             // tslint:disable-next-line: no-unused-expression
             this.isUseMock && (config = Object.assign(config, this.mock_interceptors(config) || {}))
             return config
@@ -128,35 +192,27 @@ export default class Api {
     }
     public mock_interceptors(config: AxiosRequestConfig) {
         for (const i of Api.mockDataList) {
-            if ((i.isUseMock && this.isUseMock) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyMockMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
-                const index = i.alreadyMockMethod.indexOf(config.method?.toLocaleUpperCase())
+            if ((i.isUseMock && this.isUseMock) && config.method && config.url && (i.affix ? config.url.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyMockMethod.indexOf(config.method.toLocaleUpperCase()) !== -1) {
+                const index = i.alreadyMockMethod.indexOf(config.method.toLocaleUpperCase())
                 Mock.mock(new RegExp(i.route + '\\.*'), i.mock[index].schema)
                 console.warn(`[Mock request]method:${i.mock[index].methods}&&url:${i.route}`)
             }
         }
         return config
     }
-    public params_interceptors(config: AxiosRequestConfig) {
+    public validate_interceptors(config: AxiosRequestConfig) {
         for (const i of Api.paramsList) {
             // 判断methods与url是否相同以及是否启用params
-            if ((i.isUseParams && this.isUseParams) && (i.affix ? config.url?.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyParamsMethod.indexOf(config.method?.toLocaleUpperCase()) !== -1) {
-                const index: params = i.alreadyParamsMethod.indexOf(config.method?.toLocaleLowerCase())
-                for (const field_obj of index.param) {
-                    // j表示每一个字段的对象
-                    this.params_validate(config.params, field_obj)
+            if ((i.isUseParamsValidate && this.isUseParamsValidate) && config.method && config.url && (i.affix ? config.url.match(`${i.route}\\d+/${i.affix}`) : config.url === i.url) && i.alreadyParamsMethod.indexOf(config.method.toLocaleUpperCase()) !== -1) {
+                const index = i.alreadyParamsMethod.indexOf(config.method.toLocaleUpperCase())
+                const params: Param[] = i.paramsSet[index].params;
+                for (const field_obj of params) {
+                    // field_obj表示在params.ts中每一个params下的一个字段对象
+                    // POST请求的参数会放在config.data中，GET请求会放在config.params中
+                    Api.params_validate(field_obj.value, field_obj)
                 }
             }
         }
-    }
-    public params_validate(value: any, params: Param) {
-        if (params.validate && params.validate.length) {
-            for (const i of params.validate) {
-                Api.validate[i](value, params) // TODO: 添加字段校验，返回f
-            }
-        } else {
-            return true
-        }
-
     }
 
     public data_adapter(res: AxiosResponse) {
@@ -186,34 +242,65 @@ enum paramsType {
     'number' = 'number',
     'boolean' = 'boolean',
     'object' = 'object',
-    'string[]' = 'string[]',
-    'number[]' = 'number[]',
-    'boolean[]' = 'boolean[]',
-    'object[]' = 'object[]'
 }
-interface Param {
+
+export enum type {
+    'input' = 'input',
+    'select' = 'select',
+    'radio' = 'radio',
+    'checkbox' = 'checkbox',
+    'inputNumber' = 'inputNumber',
+    'cascader' = 'cascader',
+    'switch' = 'switch',
+    'slider' = 'slider',
+    'timePicker' = 'timePicker',
+    'datePicker' = 'datePicker',
+    'dateTimePicker' = 'dateTimePicker',
+    'upload' = 'upload',
+    'rate' = 'rate',
+    'colorPicker' = 'colorPicker',
+    'transfer' = 'transfer',
+    'list' = 'list'
+}
+
+interface component {
+    type: type,
+    options?: any
+}
+
+export interface Param {
     key: string,
-    require: boolean,
+    require: boolean,  // 表明该字段为必有
+    value?: any, // 用于生成默认值
     type: paramsType,
-    isNull: boolean,
-    validate: string[] | [],
+    isNull: boolean,   // 表明该字段的值是否可以为null例如空数字
+    validate: any[],
+    label?: string,
     quote?: string,
-    list?: any[]
+    options?: any[],  // 如果type是一个list类型,那么options可以限定可选项的值，并且options必须是写死的值
+    __name?: string,
+    describe?: string, // 描述该字段应该输入怎么样的内容
+    isMultiValue?: boolean,
+    separator?: string,
+    component?: component, // 在自动生成表单表明生成什么样类型的组件
 }
-interface params {
+// 有一种复杂情况，例如：当A字段的值为true时，字段B的值的require为false,另一种情况反之
+// 这种情况一般于需要后端配合，当值为A时，就不取B，或者判断B是否为null
+interface Params {
     methods: Method,
-    param: Param[]
+    params: Param[],
 }
 // tslint:disable-next-line: max-classes-per-file
 export class api {
     public affix?: string | undefined;
     public adapter: any = null;
     public mock: mock[] = []
-    public params: params[] = []
+    public paramsSet: Params[] = []
     public isUseMock: boolean = false;
-    public isUseParams: boolean = false;
+    public isUseParamsValidate: boolean = true;  // 如无必要不要开启，复杂表单可能有性能问题
     public alreadyMockMethod: Method[] = [];
     public alreadyParamsMethod: Method[] = [];
+    public key: any;
     private route!: string;
     private url!: string;
     private axios: AxiosStatic = Axios;
@@ -276,7 +363,6 @@ export class api {
             urlList[0] = urlList[0].slice(0, urlList[0].length - 1)
         }
         url = urlList.join('/')
-
         return url
     }
 
@@ -295,18 +381,19 @@ export class api {
         this.adapter = callback;
         Api.dataAdapter.push(this)
     }
-    public setQuote(params: Param[]) {
-        // 从全局注册的quote中找到对应的quote，加入到param中
-    }
-    public setParams(methods: Method, param: Param[]) {
-        this.setQuote(param)
-        this.params.push({ methods, param })
+    public setParams(methods: Method, params: Param[]) {
+
+        setTimeout(() => {
+            /* tslint:disable-next-line */
+            Api.setQuote(this.key, params)
+        }, 200);
+        this.paramsSet.push({ methods, params })
         if (this.alreadyParamsMethod.indexOf(methods) !== -1) {
-            throw Error(`${this.name ? this.name : this.url}，Api定义Params时有重复的Method,确保该api的每种method只设置了一个mock数据`)
+            throw Error(`${this.name ? this.name : this.url}，Api定义Params时有重复的Method,确保该api的每种method只设置了一个param数据`)
         } else {
             this.alreadyParamsMethod.push(methods)
         }
-        this.isUseMock = true;
+        this.isUseParamsValidate = true;
         Api.paramsList.push(this)
     }
     public MockOn(flag: boolean) {

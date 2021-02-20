@@ -22,7 +22,7 @@
 
 ## 目前已有功能
 1. api-manager（通过封装axios,实现统一的restfromwork风格，方便的api注释，apiMock数据，api下载功能，api拦截功能，并提供api文档页面（未完善）
-2. api-icon 便捷的svg-icon&&font-icon的引入方式
+2. fleet-icon 便捷的svg-icon&&font-icon的引入方式
 
 ## 未来需要完善的功能清单
 ### 基础架构

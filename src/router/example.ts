@@ -27,6 +27,14 @@ const exampleRouter: RouteConfig[] = [{
         meta: {
             title: 'chartsCard',
         }
+    }, {
+        path: 'test_form',
+        name: 'test_form',
+        component: () => import(/* webpackChunkName: "example" */
+            '@/example/form/index.vue'),
+        meta: {
+            title: 'test_form',
+        }
     }]
 }]
 

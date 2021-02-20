@@ -13,13 +13,13 @@
         {{ activity.content }}
       </el-timeline-item>
     </el-timeline>
-    <api-icon
+    <fleet-icon
       style="font-size: 14px"
       slot="reference"
       class="icon-size-small"
       type="font"
       name="fa fa-bell-o"
-    ></api-icon>
+    ></fleet-icon>
   </el-popover>
 </template>
 <script lang="ts">
@@ -31,13 +31,13 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import api from "@/api";
+} from 'vue-property-decorator';
+import api from '@/api';
 
 @Component
 export default class extends Vue {
   public activities: any = [];
-  mounted() {
+  public mounted() {
     api.notice.GET().then((res: any) => {
       this.activities = res.data.results.message;
     });

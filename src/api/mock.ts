@@ -2,6 +2,8 @@ import * as api from './api'
 import { Random } from 'mockjs'
 import '@/utils'
 
+api.empty.setMock('GET', { message: 'ok' })
+
 api.user.setMock('GET', { good: 'mock' })
 api.login.setMock('GET', {
     token: Random.guid(),

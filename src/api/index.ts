@@ -1,5 +1,5 @@
+import * as api from './api'
 import './mock'
 import './adapter'
-
-import * as api from './api'
+import './params'
 export default api

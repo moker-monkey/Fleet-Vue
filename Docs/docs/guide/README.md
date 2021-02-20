@@ -23,7 +23,7 @@
 
 ## 目前已有功能
 1. api-manager（通过封装axios,实现统一的restfromwork风格，方便的api注释，apiMock数据，api下载功能，api拦截功能，并提供api文档页面（未完善）
-2. api-icon 便捷的svg-icon&&font-icon的引入方式
+2. fleet-icon 便捷的svg-icon&&font-icon的引入方式
 
 ## 未来需要完善的功能清单
 ### 基础架构
@@ -35,6 +35,8 @@
 6. 图片离线缓存
 7. 侧边栏自适应
 8. 页面停留时间监控
+9. 用户引导组件（技术核心使用z-index属性，制作方式：封装一个类，写一个数据结构，包括需要操作的元素，描述，全局和局部的z-index值，关闭的钩子，start方法）
+10. 黑夜模式的切换
 
 
 ### 组件及相关部分

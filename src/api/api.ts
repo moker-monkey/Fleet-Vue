@@ -1,8 +1,9 @@
 
 import Api from './Model'
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
-import vue from '@/main'
+import vue from '../main'
 const _Api = new Api('http://localhost:8888')
+_Api.isUseParamsValidate = true;
 const config: AxiosRequestConfig = {
     headers: {
         'Authorization': `token ${localStorage.getItem('token')}`,
@@ -16,7 +17,6 @@ _Api.setRequestInterceptors(
         } else {
             vue.$router.push('/login')
         }
-        console.log(_config)
         return _config
     }, (err: AxiosError) => {
         console.log(err)
@@ -25,9 +25,11 @@ _Api.setRequestInterceptors(
 )
 _Api.setResponseInterceptors(
     (_config: AxiosRequestConfig) => {
+        console.log('response', _config)
         return _config
     }, (err: AxiosError) => {
         console.log(err)
+        console.log(err.response)
         return Promise.reject(err)
     }
 )

@@ -26,7 +26,16 @@ module.exports = {
                 children: [
                     '/doc/'
                 ]
-            },
+            }, {
+                title: 'Fleet-Ui',
+                path: '/fleetForm/',
+                collapsable: false,
+                sidebarDepth: 4,
+                children: [
+                    '/fleetForm/',
+                    '/fleetIcon/'
+                ]
+            }
 
         ]
 

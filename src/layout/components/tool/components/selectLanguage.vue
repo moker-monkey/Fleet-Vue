@@ -1,10 +1,10 @@
 <template>
   <el-dropdown @command="handleSetLanguage">
-    <api-icon
+    <fleet-icon
       class="icon-size-small"
       type="font"
       name="fa fa-language"
-    ></api-icon>
+    ></fleet-icon>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="zh" :disabled="language === 'zh'"
         >中文</el-dropdown-item
@@ -24,8 +24,8 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import { LayoutModule } from "@/store/modules/layout";
+} from 'vue-property-decorator';
+import { LayoutModule } from '@/store/modules/layout';
 
 @Component
 export default class extends Vue {
@@ -37,8 +37,8 @@ export default class extends Vue {
     this.$i18n.locale = lang;
     LayoutModule.SetLanguage(lang);
     this.$message({
-      message: "Switch Language Success",
-      type: "success",
+      message: 'Switch Language Success',
+      type: 'success',
     });
   }
 }

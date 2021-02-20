@@ -1,5 +1,6 @@
 export default {
   route: {
+    'test_form': 'form自动化',
     'overview': '整体概述',
     'about': '关于',
     'me': '关于我',

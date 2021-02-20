@@ -3,7 +3,7 @@
     <div class="face">
       <img :src="avatar" />
       <span>xiaochangming</span>
-      <api-icon size="small" type="font" name="fa fa-angle-down" />
+      <fleet-icon size="small" type="font" name="fa fa-angle-down" />
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="logout">退出登录</el-dropdown-item>
@@ -19,9 +19,9 @@ import {
   Model,
   Watch,
   Component,
-} from "vue-property-decorator";
-import { UserModule } from "@/store/modules/user";
-import toggleIcon from "@/components/toggleIcon/index.vue";
+} from 'vue-property-decorator';
+import { UserModule } from '@/store/modules/user';
+import toggleIcon from '@/components/toggleIcon/index.vue';
 
 @Component({
   components: {
@@ -31,7 +31,7 @@ import toggleIcon from "@/components/toggleIcon/index.vue";
 export default class extends Vue {
   public avatar: string = UserModule.avatar;
   private async handlerCommand(command: string) {
-    if (command === "logout") {
+    if (command === 'logout') {
       await UserModule.LogOut();
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     }

@@ -1,8 +1,8 @@
-import apiIcon from './index.vue'
+import fleetIcon from './index.vue'
 
 const Plugin = {
-    install(vue: any): unknown {
-        vue.component('apiIcon', apiIcon)
+    install(vue: any): any {
+        vue.component('fleetIcon', fleetIcon)
         return vue
     },
     createSymbolIconUrl(scriptUrl: string) {

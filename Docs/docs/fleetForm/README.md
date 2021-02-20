@@ -1,44 +1,51 @@
+# fleet-form
+
+## 简介
+
+> fleet-form 是一个根据**标准化数据结构**快速创建表单的组件，虽然它默认只提供了简洁的样式和配置，但是也提供灵活的自定义表单组件；除了基础功能也提供表单校验，自定义表单校验，api管理等功能
+
+## 使用步骤
+
+自动化生成form的原理就是从api的请求参数中提取出数据结构，因此第一步是定义api的请求参数，这些请求参数被称为params，params中的每一个值称为param。
+
+### 定义数据结构（params)
+
+1. 新建一个params.ts文件
+2. 引入你的api声明文件和./Model/Api
+3. 定义该api的请求方法和对应的参数
+4. 使用`api.setParams(Method,Param[])`来设置一个对应的params
+
+对应的param定义为
+
+```typescript
+ interface Param {
+    key: string,  // 表明该api对应的字段名
+    require: boolean,  // 表明该字段必须存在
+    value?: any, // 用于生成默认值
+    type: paramsType,   // string,number,boolean,object等四种类型
+    isNull: boolean,   // 表明该字段的值是否可以为null,undefined
+    validate?: (validate[] | any[]),   // 校验方法的name，需要通过Api.setValidate('name',callback)注册
+    label?: string, // 自动生成form时对应的字段中文名
+    quote?: string, // 如果type为object,则必须注册一个quote
+    options?: any[],  //如果type是一个list类型,那么options可以限定可选项的值，并且options必须是写死的值（也可能是一个异步的options回调方法，因为
+    __name?: string,  // 这个name用于在深层的校验中找到最顶层的名称
+    describe?: string, // 描述该字段应该输入怎么样的内容
+    isMultiValue?: boolean,  // 是否是多值的参数
+    separator?: string, // 该参数必须是一个多值的参数，实际上的值应该是被分隔符分隔的字符串
+    component?: component, // 在自动生成表单表明生成什么样类型的组件
+}
+interface validate {
+    name: string, // 名称
+    argument:any // 用于为验证提供参数
+}
+
+```
+
+下面是一个和学校相关的params：
+
+```javascript
 import * as api from './api'
-import Api, { paramsType, type } from './Model'
-
-Api.setQuote('teacher', [{
-    key: 'name',
-    label: '教师名字',
-    require: true,
-    type: paramsType.string,
-    isNull: false,
-    validate: ['type', 'string_length'],
-    component: {
-        type: type.input
-    }
-}])
-
-Api.setValidate('string_length', (value: any, field_obj: any, argument: any) => {
-    // 校验前必须是传入完整的数据结构，在校验完成后再组合成正常的数据结构
-    // 添加的验证必须返回一个布尔值
-    // 如果是一个object那么就调用api的一个方法validateQuote去获取，然后递归调用
-    // 如果value是一个Multi，则调用validateMulti方法，并传入当前的递归方法名，即可
-    if (field_obj.type === 'string') {
-        if (value.length < 3) {
-            return { key: field_obj.key, message: '字符串长度不能小于3', value, __name: field_obj.__name }
-        }
-    }
-    return true
-})
-Api.setValidate('rex-', (params: any, field_obj: any, argument: any) => {
-    // 添加的验证必须返回一个布尔值
-    const value = params[field_obj.key]
-    if (value.length < argument.min) {
-        return { key: field_obj.key, message: `字符串长度不能小于${argument.min}` }
-    }
-    if (value.length > argument.max) {
-        return { key: field_obj.key, message: `字符串长度不能大于${argument.max}` }
-    }
-    return true
-})
-
-// Api.setValidate('type', )
-// 每个字段可以添加一个base字段来进行溯源，base指向的是api，或者quote这样，如果没有指向则表示该字段为最底层字段
+import Api, { paramsType, type } from "./Model"
 
 api.empty.setParams('GET', [{
     key: 'name',
@@ -345,3 +352,50 @@ api.empty.setParams('GET', [{
         type: type.switch,
     }
 }])
+
+```
+
+
+
+
+### 新建验证方式
+
+
+:::tip 
+**验证函数只需要校验字符串或数字的合法性即可**
+> 其一，从param的角度来看，params中的每一个field的value都存在着两种值，第一种是单值，第二种是多值，因此校验时都需要校验单值与多值；多值本质上是单值的重复，为了简化多值的校验情况，避免写复杂的逻辑，fleet-form的内部逻辑为，第一将params拆解为param并验证param的value，第二判断param的值是否是多值，第三如果是多值则将value遍历传入验证函数中，若value是object则找到对应的quote，递归调用，直到拆解到非object，再传入验证函数，因此验证函数只需要校验非object的单值即可。
+
+
+> 其二，内置了基本type类型校验，用户无需对类型进行校验，只需要校验字符串或数字的合法性即可
+:::
+
+1. 引入Model.ts的Api类
+2. 使用`Api.setValidate(name,callback)`创建一个验证函数
+3. 在param中的validate中使用验证函数
+
+```javascript
+Api.setValidate('string_length', (value: any, field_obj: any, argument: any) => {
+    // 校验前必须是传入完整的数据结构，在校验完成后再组合成正常的数据结构
+    // 添加的验证必须返回一个布尔值
+    // 如果是一个object那么就调用api的一个方法validateQuote去获取，然后递归调用
+    // 如果value是一个Multi，则调用validateMulti方法，并传入当前的递归方法名，即可
+    if (field_obj.type === 'string') {
+        if (value.length < argument.min) {
+            return { key: field_obj.key, message: `字符串长度不能小于${argument.min}`, value, __name: field_obj.__name }
+        }
+    }
+    return true
+})
+Api.setQuote('teacher', [{
+    key: 'name',
+    label: '教师名字',
+    require: true,
+    type: paramsType.string,
+    isNull: false,
+    validate: [{ name: 'string_length', argument: { min: 3, max: 20 } }],
+    component: {
+        type: type.input
+    }
+}])
+```
+

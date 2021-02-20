@@ -8,10 +8,10 @@
         :to="resolvePath(theOnlyOneChild.path)"
       >
         <el-menu-item :index="resolvePath(theOnlyOneChild.path)">
-          <api-icon
+          <fleet-icon
             :type="theOnlyOneChild.meta.icon_type === 'svg' ? 'svg' : 'font'"
             :name="theOnlyOneChild.meta.icon"
-          ></api-icon>
+          ></fleet-icon>
           <span slot="title" style="margin-left: 4px">{{
             $t("route." + theOnlyOneChild.meta.title)
           }}</span>
@@ -21,10 +21,10 @@
     <template v-else>
       <el-submenu :index="resolvePath(item.path)" popper-append-to-body>
         <template slot="title">
-          <api-icon
+          <fleet-icon
             :type="item.meta.icon_type === 'svg' ? 'svg' : 'font'"
             :name="item.meta.icon"
-          ></api-icon>
+          ></fleet-icon>
           <span slot="title" style="margin-left: 4px">{{
             $t("route." + item.meta.title)
           }}</span>
@@ -42,16 +42,16 @@
   </fragment>
 </template>
 <script lang="ts">
-import path from "path";
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { isExternal } from "@/utils/validate";
-import itemLink from "./itemLink.vue";
-import { RouteConfig } from "vue-router";
-@Component({ name: "MenuItem", components: { itemLink } })
+import path from 'path';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { isExternal } from '@/utils/validate';
+import itemLink from './itemLink.vue';
+import { RouteConfig } from 'vue-router';
+@Component({ name: 'MenuItem', components: { itemLink } })
 export default class MenuItem extends Vue {
   @Prop()
   public item: any;
-  @Prop({ default: "" }) private basePath!: string;
+  @Prop({ default: '' }) private basePath!: string;
   public hasOneShowingChild(children: any = [], parent: any) {
     const showingChildren = children.filter((item: any) => {
       if (item.meta && !item.meta.hidden) {
@@ -95,7 +95,7 @@ export default class MenuItem extends Vue {
         }
       }
     }
-    return { ...this.item, path: "" };
+    return { ...this.item, path: '' };
   }
   private resolvePath(routePath: string) {
     // 只要不是外部链接，就将当前的routePath和this.basePath组合起来
